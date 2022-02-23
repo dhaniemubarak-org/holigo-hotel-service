@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PopularHotelDto {
     
-    private Integer id;
+    private Integer hotelId;
     
     private String name;
 

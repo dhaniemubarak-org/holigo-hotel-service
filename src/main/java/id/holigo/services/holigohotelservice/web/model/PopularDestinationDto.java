@@ -1,7 +1,5 @@
 package id.holigo.services.holigohotelservice.web.model;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,9 +9,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PopularHotelByCityDto {
+public class PopularDestinationDto {
     
-    private String name;
+    private Integer targetId;
 
-    private List<PopularHotelDto> hotels;
+    private String city;
+
+    private String province;
+
+    private String country;
+
+    private Integer hotelAmount;
 }

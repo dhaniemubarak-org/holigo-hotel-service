@@ -1,6 +1,5 @@
 package id.holigo.services.holigohotelservice.domain;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 import javax.persistence.Entity;
@@ -9,7 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -28,29 +27,27 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "popular_hotels")
-public class PopularHotel {
+@Table(name = "popular_destinations")
+public class PopularDestination {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @Type(type = "org.hibernate.type.ShortType")
     @JoinColumn(name = "city_id")
-    private Cities city;
+    private Cities cityId;
 
-    private Integer hotelId;
+    private Integer targetId;
 
-    private String name;
+    private String city;
 
-    private String imageUrl;
+    private String province;
 
-    private Double rating;
+    private String country;
 
-    private BigDecimal fareAmount;
-
-    private BigDecimal normalAmount;
+    private short hotelAmount;
 
     @CreationTimestamp
     private Timestamp createdAt;

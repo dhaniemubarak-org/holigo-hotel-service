@@ -1,19 +1,19 @@
 package id.holigo.services.holigohotelservice.domain;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AllArgsConstructor;
@@ -28,29 +28,27 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "popular_hotels")
-public class PopularHotel {
+@Table(name = "cities")
+public class Cities {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(columnDefinition = "SMALLINT")
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @Type(type = "org.hibernate.type.ShortType")
-    @JoinColumn(name = "city_id")
-    private Cities city;
+    private String countryId;
 
-    private Integer hotelId;
+    private String nameEn;
 
     private String name;
 
-    private String imageUrl;
+    private String code;
 
-    private Double rating;
+    private Integer isActive;
 
-    private BigDecimal fareAmount;
-
-    private BigDecimal normalAmount;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "city")
+    @Size(min=1, max=5)
+    private List<PopularHotel> hotels;
 
     @CreationTimestamp
     private Timestamp createdAt;

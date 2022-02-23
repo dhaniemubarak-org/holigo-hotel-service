@@ -11,9 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PopularHotelByCityDto {
+public class ListPopularDestinationDto {
     
-    private String name;
-
-    private List<PopularHotelDto> hotels;
+    private List<PopularDestinationDto> data;
 }
