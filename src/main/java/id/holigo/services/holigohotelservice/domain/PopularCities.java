@@ -3,14 +3,15 @@ package id.holigo.services.holigohotelservice.domain;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -21,35 +22,37 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Builder
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Builder
 @Entity
-@Table(name = "cities")
-public class Cities {
-    
+@Table(name = "popular_cities")
+public class PopularCities {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @Column(columnDefinition = "SMALLINT")
+    private Integer id;
+
+    private String countryId;
+
+    private String nameEn;
 
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "country_id", nullable = false)
-    private Countries country;
+    private String code;
 
-    @ManyToOne
-    @JoinColumn(name = "province_id", nullable = false)
-    private Provinces province;
+    private Integer isActive;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "city")
+    @Size(min=1, max=5)
+    private List<PopularHotel> hotels;
 
     @CreationTimestamp
     private Timestamp createdAt;
 
     @UpdateTimestamp
     private Timestamp updatedAt;
-    
-    @OneToMany
-    private List<HotelAddresses> hotel;
 }

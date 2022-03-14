@@ -38,7 +38,7 @@ public class PopularHotel {
     @ManyToOne(fetch = FetchType.LAZY)
     @Type(type = "org.hibernate.type.ShortType")
     @JoinColumn(name = "city_id")
-    private Cities city;
+    private PopularCities city;
 
     private Integer hotelId;
 

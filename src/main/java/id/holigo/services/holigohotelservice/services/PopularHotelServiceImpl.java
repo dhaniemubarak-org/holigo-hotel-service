@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import id.holigo.services.holigohotelservice.domain.Cities;
-import id.holigo.services.holigohotelservice.repositories.CityRepository;
+import id.holigo.services.holigohotelservice.domain.PopularCities;
+import id.holigo.services.holigohotelservice.repositories.PopularCityRepository;
 import id.holigo.services.holigohotelservice.web.mappers.PopularHotelMapper;
 import id.holigo.services.holigohotelservice.web.model.PopularHotelByCityDto;
 
@@ -15,7 +15,7 @@ import id.holigo.services.holigohotelservice.web.model.PopularHotelByCityDto;
 public class PopularHotelServiceImpl implements PopularHotelService {
 
     @Autowired
-    private CityRepository cityRepository;
+    private PopularCityRepository cityRepository;
 
     @Autowired
     private PopularHotelMapper popularHotelMapper;
@@ -25,7 +25,7 @@ public class PopularHotelServiceImpl implements PopularHotelService {
         names.add("Jakarta");
         names.add("Bandung");
         names.add("Bali");
-        List<Cities> cities = cityRepository.findByCitiesNames(names);
+        List<PopularCities> cities = cityRepository.findByCitiesNames(names);
         List<PopularHotelByCityDto> listPopularDto = cities.stream()
                 .map(popularHotelMapper::citiesToPopularHotelByCityDto).toList();
 

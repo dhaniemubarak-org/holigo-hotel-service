@@ -27,9 +27,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "cities")
-public class Cities {
-    
+@Table(name = "districts")
+public class Districts {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -44,12 +44,17 @@ public class Cities {
     @JoinColumn(name = "province_id", nullable = false)
     private Provinces province;
 
+    @ManyToOne
+    @JoinColumn(name = "city_id", nullable = false)
+    private Cities city;
+
     @CreationTimestamp
     private Timestamp createdAt;
 
     @UpdateTimestamp
     private Timestamp updatedAt;
-    
+
     @OneToMany
     private List<HotelAddresses> hotel;
+
 }

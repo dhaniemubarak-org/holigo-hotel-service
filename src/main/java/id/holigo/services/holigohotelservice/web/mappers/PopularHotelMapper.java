@@ -2,7 +2,7 @@ package id.holigo.services.holigohotelservice.web.mappers;
 
 import org.mapstruct.Mapper;
 
-import id.holigo.services.holigohotelservice.domain.Cities;
+import id.holigo.services.holigohotelservice.domain.PopularCities;
 import id.holigo.services.holigohotelservice.domain.PopularHotel;
 import id.holigo.services.holigohotelservice.web.model.PopularHotelByCityDto;
 import id.holigo.services.holigohotelservice.web.model.PopularHotelDto;
@@ -14,7 +14,7 @@ public interface PopularHotelMapper {
 
     PopularHotel popularHotelDtoToPopularHotel(PopularHotelDto popularHotelDto);
 
-    Cities popularHotelByCityDtoToCities(PopularHotelByCityDto popularHotelByCityDto);
+    PopularCities popularHotelByCityDtoToCities(PopularHotelByCityDto popularHotelByCityDto);
 
-    PopularHotelByCityDto citiesToPopularHotelByCityDto(Cities cities);
+    PopularHotelByCityDto citiesToPopularHotelByCityDto(PopularCities cities);
 }

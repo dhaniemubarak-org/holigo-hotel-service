@@ -27,29 +27,26 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "cities")
-public class Cities {
-    
+@Table(name = "provinces")
+public class Provinces {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    private String name;
 
     @ManyToOne
     @JoinColumn(name = "country_id", nullable = false)
     private Countries country;
 
-    @ManyToOne
-    @JoinColumn(name = "province_id", nullable = false)
-    private Provinces province;
+    private String name;
 
     @CreationTimestamp
     private Timestamp createdAt;
 
     @UpdateTimestamp
     private Timestamp updatedAt;
-    
+
     @OneToMany
     private List<HotelAddresses> hotel;
+
 }
