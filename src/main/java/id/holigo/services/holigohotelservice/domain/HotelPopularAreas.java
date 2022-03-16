@@ -25,24 +25,24 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "hotel_images")
-public class HotelImages {
-    
+@Table(name = "hotel_popular_areas")
+public class HotelPopularAreas {
+        
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "hotel_id")
     private Hotels hotel;
 
+    private String name;
+
     private String category;
 
-    private String uploadedBy;
+    private String distance;
 
-    private String imageUrl;
-    
-    private String pathUrl;
+    private String icon;
 
     @CreationTimestamp
     private Timestamp createdAt;

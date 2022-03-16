@@ -1,6 +1,6 @@
 package id.holigo.services.holigohotelservice.domain;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

@@ -1,7 +1,9 @@
 package id.holigo.services.holigohotelservice.domain;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,24 +27,29 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "hotel_images")
-public class HotelImages {
+@Table(name = "hotel_stories")
+public class HotelStories {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "hotel_id")
     private Hotels hotel;
 
-    private String category;
+    private String videoUrl;
 
-    private String uploadedBy;
+    private String name;
 
-    private String imageUrl;
-    
-    private String pathUrl;
+    private Double rating;
+
+    private BigDecimal fareAmount;
+
+    private String tag;
+
+    @Column(columnDefinition = "TINYINT")
+    private Short isShow;
 
     @CreationTimestamp
     private Timestamp createdAt;

@@ -1,13 +1,14 @@
 package id.holigo.services.holigohotelservice.domain;
 
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -25,28 +26,27 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "hotel_images")
-public class HotelImages {
+@Table(name = "facility_categories")
+public class FacilityCategories {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long id;
+    private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "hotel_id")
-    private Hotels hotel;
+    private String name;
 
-    private String category;
-
-    private String uploadedBy;
-
-    private String imageUrl;
-    
-    private String pathUrl;
+    private String icon;
 
     @CreationTimestamp
     private Timestamp createdAt;
 
     @UpdateTimestamp
     private Timestamp updatedAt;
+
+    @OneToMany(mappedBy = "category")
+    private List<Facilities> facilities;
+
+    @OneToMany(mappedBy = "category")
+    Set<HotelFacilities> hotelFacilities;
+    
 }

@@ -19,6 +19,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -62,19 +63,37 @@ public class Hotels {
     @OneToOne(mappedBy = "hotel")
     private HotelAddresses location;
 
-    @OneToMany
+    @OneToMany(mappedBy = "hotel")
     private List<HotelImages> images;
 
     @ManyToMany
     @JoinTable(name = "hotel_main_facilities", joinColumns = @JoinColumn(name = "hotel_id"), inverseJoinColumns = @JoinColumn(name = "main_facility_id"))
     private Set<MainFacilities> mainFacility;
 
-    @OneToMany
-    private List<HotelDescription> description;
+    @OneToMany(mappedBy = "hotel")
+    private List<HotelDescription> descriptions;
 
-    @OneToMany
+    @OneToMany(mappedBy = "hotel")
     private List<HotelPolicies> policies;
 
-    @OneToMany
+    @OneToMany(mappedBy = "hotel")
     private List<HotelRules> rules;
+
+    @OneToMany(mappedBy = "hotel")
+    private List<HotelNearbyPlaces> nearbyPlaces;
+
+    @OneToMany(mappedBy = "hotel")
+    private List<HotelPopularAreas> popularAreas;
+
+    @OneToMany(mappedBy = "hotel")
+    @Where(clause = "is_show = 1")
+    private List<HotelAdditionalInformations> additionalInformations;
+
+    @OneToMany(mappedBy = "hotel")
+    @Where(clause = "is_show = 1")
+    private List<HotelStories> stories;
+
+    @OneToMany(mappedBy = "hotels")
+    private Set<HotelFacilities> facilities;
+
 }

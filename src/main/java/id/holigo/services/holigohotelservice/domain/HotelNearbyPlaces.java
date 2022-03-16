@@ -15,34 +15,36 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "hotel_images")
-public class HotelImages {
+@Table(name = "hotel_nearby_places")
+public class HotelNearbyPlaces {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "hotel_id")
     private Hotels hotel;
 
+    private String name;
+
     private String category;
 
-    private String uploadedBy;
+    private String distance;
 
-    private String imageUrl;
-    
-    private String pathUrl;
+    private String icon;
 
     @CreationTimestamp
     private Timestamp createdAt;

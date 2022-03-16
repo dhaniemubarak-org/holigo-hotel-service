@@ -8,6 +8,7 @@ import id.holigo.services.holigohotelservice.domain.Hotels;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelDto;
 
 @Mapper
+@DecoratedWith(HotelMapperDecorator.class)
 public interface HotelMapper {
 
     @Mapping(source = "hotel.location.country.name", target = "location.country")
@@ -16,7 +17,9 @@ public interface HotelMapper {
     @Mapping(source = "hotel.location.district.name", target = "location.district")
     @Mapping(source = "hotel.location.detail", target = "location.address")
     @Mapping(source = "hotel.hotelType.name", target = "type")
+    @Mapping(target = "description", ignore = true)
+    @Mapping(target = "policy", ignore = true)
+    @Mapping(target = "additionalInformations", ignore = true)
+    @Mapping(target =  "facilities", ignore = true)
     public HotelDto hotelsToHotelDto(Hotels hotel);
-
-    // Hotels hotelDtoToHotels(HotelDto hotelDto);
 }

@@ -15,5 +15,4 @@ public class HotelImagesDto {
     @Builder.Default
     private String uploadedBy = "HOTEL";
     private String imageUrl;
-    private String pathUrl;
 }

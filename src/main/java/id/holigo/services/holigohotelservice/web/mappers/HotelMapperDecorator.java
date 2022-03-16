@@ -1,36 +1,63 @@
 package id.holigo.services.holigohotelservice.web.mappers;
 
-import org.mapstruct.AfterMapping;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import id.holigo.services.holigohotelservice.domain.HotelDescription;
+import id.holigo.services.holigohotelservice.domain.HotelPolicies;
 import id.holigo.services.holigohotelservice.domain.Hotels;
+import id.holigo.services.holigohotelservice.services.HotelFacilitiesService;
+import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelDescriptionDto;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelDto;
-import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelLocationDto;
+import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelFacilityDto;
+import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelPolicyDto;
+import lombok.extern.slf4j.Slf4j;
 
-public abstract class HotelMapperDecorator{
+@Slf4j
+public class HotelMapperDecorator implements HotelMapper {
 
+    @Autowired
     private HotelMapper hotelMapper;
 
-    public HotelMapperDecorator(HotelMapper hotelMapper) {
-        this.hotelMapper = hotelMapper;
-    }
+    @Autowired
+    private HotelFacilitiesService hotelFacilitiesService;
 
-    @AfterMapping
-    public HotelDto hotelsToHotelDto(Hotels hotel) {
-        HotelDto hotelDto = new HotelDto();
-        hotelDto.setName(hotel.getName());
-        hotelDto.setType(hotel.getHotelType().getName());
-        hotelDto.setRating(hotel.getRating());
-        HotelLocationDto hotelLocationDto = new HotelLocationDto();
-        hotelLocationDto.setCountry(hotel.getLocation().getCountry().getName());
-        hotelLocationDto.setProvince(hotel.getLocation().getProvince().getName());
-        hotelLocationDto.setCity(hotel.getLocation().getCity().getName());
-        hotelLocationDto.setDistrict(hotel.getLocation().getDistrict().getName());
-        hotelLocationDto.setAddress(hotel.getLocation().getDetail());
-        hotelLocationDto.setLatitude(hotel.getLocation().getLatitude());
-        hotelDto.setLocation(HotelLocationDto.builder().address(hotel.getLocation().getDetail())
-                .country(hotel.getLocation().getCity().getName()).province(hotel.getLocation().getProvince().getName())
-                .city(hotel.getLocation().getCity().getName()).district(hotel.getLocation().getDistrict().getName())
-                .latitude(hotel.getLocation().getLatitude()).longitude(hotel.getLocation().getLongitude()).build());
+    @Override
+    public HotelDto hotelsToHotelDto(Hotels hotels) {
+        HotelDto hotelDto = hotelMapper.hotelsToHotelDto(hotels);
+
+        HotelDescriptionDto descriptionDto = new HotelDescriptionDto();
+        hotels.getDescriptions().stream().forEach((desc) -> {
+            log.info("Description -> {}", desc.getType());
+            if (desc.getType().equals("short")) {
+                descriptionDto.setShortDesc(desc.getText());
+            } else if (desc.getType().equals("long")) {
+                descriptionDto.setLongDesc(desc.getText());
+            }
+        });
+        hotelDto.setDescription(descriptionDto);
+
+        HotelPolicyDto policyDto = new HotelPolicyDto();
+        for(HotelPolicies hotelPolicies : hotels.getPolicies()){
+            if (hotelPolicies.getType().equals("short")) {
+                policyDto.setShortPolicy(hotelPolicies.getText());
+            } else if (hotelPolicies.getType().equals("long")) {
+                policyDto.setLongPolicy(hotelPolicies.getText());
+            }
+        }
+        hotelDto.setPolicy(policyDto);
+
+        List<String> additionalInformations = new ArrayList<>();
+        hotels.getAdditionalInformations().stream().forEach((information) -> {
+            additionalInformations.add(information.getInformation());
+        });
+        hotelDto.setAdditionalInformations(additionalInformations);
+
+        List<HotelFacilityDto> facilityDto = hotelFacilitiesService.getFacilityHotel(hotels);
+        hotelDto.setFacilities(facilityDto);
+
         return hotelDto;
     }
 

@@ -52,8 +52,8 @@ public class HotelAvailableServiceImpl implements HotelAvailableService {
                 // hotelDto.setAdditionalInformations(additionalInformation);
                 // hotelDto.setPolicy(hotelPolicy);
                 // hotelDto.setHotelInformation(hotelInformationDto);
-                Optional<Hotels> hotel = hotelRepository.findById(Long.valueOf(1));
-                log.info("Response Hotel -> {}", hotel.get().getLocation());
+                Optional<Hotels> hotel = hotelRepository.findById(id);
+                log.info("Response Hotel -> {}", hotel.get().getFacilities());
                 hotelDto = hotelMapper.hotelsToHotelDto(hotel.get());
                 return hotelDto;
 

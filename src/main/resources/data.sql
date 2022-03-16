@@ -16446,7 +16446,51 @@ INSERT INTO `hotel_main_facilities` (`id`, `created_at`, `updated_at`, `hotel_id
 (1, '2022-03-10 16:21:00.000000', '2022-03-10 16:21:00.000000', 1, 1);
 
 INSERT INTO `hotel_images` (`id`, `category`, `created_at`, `image_url`, `updated_at`, `uploaded_by`, `hotel_id`) VALUES
-(1, 'Lobby', '2022-03-10 16:21:00.000000', 'https://imagekit.io/alithl/xxx.png', '2022-03-10 16:21:00.000000', 'ACOMODATION', 1);
+(1, 'Lobby', '2022-03-10 16:21:00.000000', 'https://imagekit.io/alihtl/xxx.png', '2022-03-10 16:21:00.000000', 'ACOMODATION', 1),
+(2, '', '2022-03-10 16:21:00.000000', 'https://imagekit.io/alihtl/xxxs.png', '2022-03-10 16:21:00.000000', 'USER', 1);
+
 
 INSERT INTO `hotel_supplier_codes` (`id`, `code`, `created_at`, `supplier_id`, `updated_at`, `hotel_id`) VALUES
 (1, 'ID1000523', '2022-03-10 16:21:00.000000', 1, '2022-03-10 16:21:00.000000', 1);
+
+INSERT INTO `hotel_descriptions` (`id`, `created_at`, `text`, `type`, `updated_at`, `hotel_id`) VALUES
+(1, '2022-03-10 16:21:00.000000', '"Hotel Indonesia Kempinski Jakarta adalah hotel di lokasi yang baik, tepatnya berada di Thamrin. Dari Stasiun MRT Bundaran HI, hotel ini hanya berjarak sekitar 0,46 km. Selain letaknya yang strategis, Hotel Indonesia Kempinski Jakarta juga merupakan hotel dekat Menara BCA berjarak sekitar 0,14 km dan Grand Indonesia Shopping Mall berjarak sekitar 0,08 km. Hotel Indonesia Kempinski Jakarta adalah pilihan tepat bagi Anda yang ingin menghabiskan waktu dengan berbagai fasilitas mewah. Nikmati kualitas layanan terbaik dan pengalaman mengesankan selama menginap di hotel ini.Kualitas pelayanan super, ditambah berbagai fasilitas unggulan akan membuat saat-saat menginap di sini menjadi sebuah pengalaman berkesan yang luar biasa. Pusat kebugaran menjadi salah satu fasilitas yang wajib Anda coba saat menginap di tempat ini. Tersedia kolam renang untuk Anda bersantai sendiri maupun bersama teman dan keluarga. Manjakan diri Anda dengan menikmati fasilitas spa yang memberikan harga dan kualitas pelayanan terbaik. Resepsionis siap 24 jam untuk melayani proses check-in, check-out dan kebutuhan Anda yang lain. Jangan ragu untuk menghubungi resepsionis, kami siap melayani Anda. Terdapat restoran yang menyajikan menu lezat ala Hotel Indonesia Kempinski Jakarta khusus untuk Anda. WiFi tersedia di seluruh area publik properti untuk membantu Anda tetap terhubung dengan keluarga dan teman. Hotel Indonesia Kempinski Jakarta adalah akomodasi dengan fasilitas baik dan kualitas pelayanan memuaskan menurut sebagian besar tamu. Pengalaman berkesan dan tak terlupakan akan Anda dapatkan selama menginap di Hotel Indonesia Kempinski Jakarta."', 'long', '2022-03-10 16:21:00.000000', 1),
+(2, '2022-03-10 16:21:00.000000', 'Hotel Indonesia Kempinski Jakarta adalah hotel di lokasi yang baik, tepatnya berada di Thamrin. Dari Stasiun MRT Bundaran HI, hotel ini hanya berjarak sekitar 0,46 km. Selain letaknya yang strategis, Hotel Indonesia Kempinski Jakarta juga merupakan hotel dekat Menara BCA berjarak sekitar 0,14 km dan Grand Indonesia Shopping Mall berjarak sekitar 0,08 km.', 'short', '2022-03-10 16:21:00.000000', 1);
+
+INSERT INTO `hotel_policies` (`id`, `created_at`, `text`, `type`, `updated_at`, `hotel_id`) VALUES
+(1, '2022-03-10 16:21:00.000000', 'Hewan peliharaan diizinkan , biaya tambahan berlaku. Hotel memperbolehkan check-in awal, bergantung pada ketersediaan kamar, dengan biaya tambahan. Hotel memperbolehkan check-out lebih lama, bergantung pada ketersediaan kamar, dengan biaya tambahan. Hotel ini akan mengenakan biaya tambahan untuk transportasi sebesar IDR 330,000.NOTICE: TEMPORARY CLOSURE & UPDATE OF PUBLIC FACILITIES To support and follow the Large Scale Social Restriction regulation from the local authorities and to prioritize the health and safety for all our guests, please be informed that the facilities: Gym & Fitness Center, Swimming Pool, Cubbies Playground, Spa and Sauna will be temporary closed until further notice. Restaurant will open from 06.00 AM to 10.30 PM (Monday - Friday) and 07.00 AM to 11.00 PM (Saturday - Sunday). Breakfast will be delivered to the room, restaurant not opened for dine-in, and only serving in room dining & take away. And facilities noticement: free parking listed is only applicable for one car per unit. We apologize for any inconvenience caused. Thank you for your understanding.', 'long', '2022-03-10 16:21:00.000000', 1),
+(2, '2022-03-10 16:21:00.000000', 'Hewan peliharaan diizinkan , biaya tambahan berlaku. Hotel memperbolehkan check-in awal, bergantung pada ketersediaan kamar, dengan biaya tambahan.', 'short', '2022-03-10 16:21:00.000000', 1);
+
+INSERT INTO `hotel_rules` (`id`, `key`, `value`, `created_at`, `updated_at`, `hotel_id`) VALUES
+(1, 'Check-in', '14:00', '2022-03-10 16:21:00.000000', '2022-03-10 16:21:00.000000', 1),
+(2, 'Check-out', '12:00', '2022-03-10 16:21:00.000000', '2022-03-10 16:21:00.000000', 1),
+(3, 'Currency', 'IDR', '2022-03-10 16:21:00.000000', '2022-03-10 16:21:00.000000', 1);
+
+INSERT INTO `hotel_nearby_places` (`id`, `hotel_id`, `name`, `category`, `distance`, `icon`, `created_at`, `updated_at`) VALUES
+(1, 1, 'DAON Dine & Coffee - Tokopedia Tower', 'Casual Dining', '0,26km', 'https://imagekit.io/holigo/...', '2022-03-10 16:21:00.000000', '2022-03-10 16:21:00.000000');
+
+INSERT INTO `hotel_popular_areas` (`id`, `hotel_id`, `name`, `category`, `distance`, `icon`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Stasiun Gambil', 'Pusat Transportasi', '3,26km', 'https://imagekit.io/holigo/...', '2022-03-10 16:21:00.000000', '2022-03-10 16:21:00.000000');
+
+INSERT INTO `hotel_additional_informations` (`id`, `hotel_id`, `information`, `is_show`, `created_at`, `updated_at`) VALUES
+(1, 1, '8 Orang baru saja melakukan booking.', 1, '2022-03-10 16:21:00.000000', '2022-03-10 16:21:00.000000'),
+(2, 1, '128 Orang telah melihat hotel ini.', 1, '2022-03-10 16:21:00.000000', '2022-03-10 16:21:00.000000'),
+(3, 1, '128 Orang telah melihat hotel ini.', 0, '2022-03-10 16:21:00.000000', '2022-03-10 16:21:00.000000');
+
+INSERT INTO `hotel_stories` (`id`, `hotel_id`, `video_url`, `name`, `rating`, `fare_amount`, `tag`, `is_show`, `created_at`, `updated_at`) VALUES
+(1, 1, 'https://.....', 'The Langham Hotel', 5.0, 993168.00, 'Suite Room', 1, '2022-03-10 16:21:00.000000', '2022-03-10 16:21:00.000000');
+
+INSERT INTO `facility_categories` (`id`, `created_at`, `icon`, `name`, `updated_at`) VALUES
+(1, '2022-03-10 16:21:00.000000', 'https://imagekit.io/alihtl/', 'Fasilitas Umum', '2022-03-10 16:21:00.000000'),
+(2, '2022-03-10 16:21:00.000000', 'https://imagekit.io/alihtl/', 'Fasilitas Kamar', '2022-03-10 16:21:00.000000');
+
+
+INSERT INTO `facilities` (`id`, `created_at`, `is_show`, `name`, `updated_at`, `facility_category_id`) VALUES
+(1, '2022-03-10 16:21:00.000000', 1, 'AC', '2022-03-10 16:21:00.000000', 1),
+(2, '2022-03-10 16:21:00.000000', 1, 'Pembuat Kopi', '2022-03-10 16:21:00.000000', 2),
+(3, '2022-03-10 16:21:00.000000', 1, 'Kulkas', '2022-03-10 16:21:00.000000', 2);
+
+INSERT INTO `hotel_facilities` (`id`, `category_id`, `hotel_id`, `facility_id`) VALUES
+(1, 1, 1, 1),
+(2, 2, 1, 2),
+(3, 2, 1, 3);
