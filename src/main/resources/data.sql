@@ -16494,3 +16494,38 @@ INSERT INTO `hotel_facilities` (`id`, `category_id`, `hotel_id`, `facility_id`) 
 (1, 1, 1, 1),
 (2, 2, 1, 2),
 (3, 2, 1, 3);
+
+INSERT INTO `hotel_rooms` (`id`, `created_at`, `description`, `max_occupancy`, `name`, `size`, `updated_at`, `hotel_id`)VALUES
+(1, '2022-03-10 16:21:00.000000', '"1 King Bed 915-sq-foot room with city views Club/Executive Level - Executive Lounge access, continental breakfast, light refreshments, Internet access in the lounge, and 2 hours of meeting room use (subject to availability) Layout - Bedroom and sitting area Internet - Free WiFi Entertainment - Flat-screen TV with cable channels and pay movies Food & Drink - Coffee/tea maker, minibar, 24-hour room service, and free bottled water Sleep - A pillow menu, blackout drapes/curtains, turndown service, and bed sheets Bathroom - Private bathroom, deep soaking bathtub and separate shower Practical - Laptop-compatible safe, free newspaper, and desk; rollaway/extra beds and free cribs/infant beds available on request Comfort - Air conditioning and daily housekeeping Non-Smoking Connecting/adjoining rooms can be requested, subject to availability"', 2, 'Deluxe Twin', '30.0 m2', '2022-03-10 16:21:00.000000', 1),
+(2, '2022-03-10 16:21:00.000000', '"1 King Bed 915-sq-foot room with city views Club/Executive Level - Executive Lounge access, continental breakfast, light refreshments, Internet access in the lounge, and 2 hours of meeting room use (subject to availability) Layout - Bedroom and sitting area Internet - Free WiFi Entertainment - Flat-screen TV with cable channels and pay movies Food & Drink - Coffee/tea maker, minibar, 24-hour room service, and free bottled water Sleep - A pillow menu, blackout drapes/curtains, turndown service, and bed sheets Bathroom - Private bathroom, deep soaking bathtub and separate shower Practical - Laptop-compatible safe, free newspaper, and desk; rollaway/extra beds and free cribs/infant beds available on request Comfort - Air conditioning and daily housekeeping Non-Smoking Connecting/adjoining rooms can be requested, subject to availability"', 2, 'Deluxe Twin', '38.0 m2', '2022-03-10 16:21:00.000000', 1);
+
+INSERT INTO `amenity_categories` (`id`, `created_at`, `icon`, `name`, `updated_at`) VALUES
+(1, '2022-03-10 16:21:00.000000', 'https://imagekit.io/alihtl/xxxxx', 'Fasilitas Kamar', '2022-03-10 16:21:00.000000'),
+(2, '2022-03-10 16:21:00.000000', 'https://imagekit.io/alihtl/xxwsz', 'Perlengkapan Kamar', '2022-03-10 16:21:00.000000');
+
+INSERT INTO `amenities` (`id`, `created_at`, `is_show`, `name`, `updated_at`, `amenity_category_id`) VALUES
+(1, '2022-03-10 16:21:00.000000', 1, 'AC', '2022-03-10 16:21:00.000000', 1),
+(2, '2022-03-10 16:21:00.000000', 1, 'Air Minum', '2022-03-10 16:21:00.000000', 1),
+(3, '2022-03-10 16:21:00.000000', 1, 'Televisi', '2022-03-10 16:21:00.000000', 1),
+(4, '2022-03-10 16:21:00.000000', 1, 'Desk', '2022-03-10 16:21:00.000000', 1),
+(5, '2022-03-10 16:21:00.000000', 1, 'Brankas dalam kamar', '2022-03-10 16:21:00.000000', 1),
+(6, '2022-03-10 16:21:00.000000', 1, 'Toileters', '2022-03-10 16:21:00.000000', 2),
+(7, '2022-03-10 16:21:00.000000', 1, 'Hair Dryer', '2022-03-10 16:21:00.000000', 2);
+
+INSERT INTO `main_amenities` (`id`, `created_at`, `image_url`, `label`, `updated_at`) VALUES
+(1, '2022-03-10 16:21:00.000000', 'https://imagekit.io/alihtl/xwasdw', 'Pembuatan Kopi/Teh', '2022-03-10 16:21:00.000000'),
+(2, '2022-03-10 16:21:00.000000', 'https://imagekit.io/alihtl/asdwq2asd', 'AC', '2022-03-10 16:21:00.000000');
+
+INSERT INTO `hotel_room_main_amenities` (`id`, `created_at`, `updated_at`, `hotel_room_id`, `main_amenity_id`) VALUES
+(1, '2022-03-10 16:21:00.000000', '2022-03-10 16:21:00.000000', 1, 1),
+(2, '2022-03-10 16:21:00.000000', '2022-03-10 16:21:00.000000', 2, 1);
+
+INSERT INTO `hotel_room_images` (`id`, `category`, `created_at`, `image_url`, `path_url`, `updated_at`, `hotel_id`, `hotel_room_id`) VALUES
+(1, '', '2022-03-10 16:21:00.000000', 'https://sandbox.holigo.id', '', '2022-03-10 16:21:00.000000', 1, 1),
+(2, 'BATHROOM', '2022-03-10 16:21:00.000000', 'https://sandbox.holigo.id', '', '2022-03-10 16:21:00.000000', 1, 1),
+(3, 'BEDROOM', '2022-03-10 16:21:00.000000', 'https://sandbox.holigo.id', '', '2022-03-10 16:21:00.000000', 1, 2);
+
+INSERT INTO `hotel_room_amenities` (`id`, `amenity_id`, `category_id`, `hotel_room_id`) VALUES
+(1, 1, 1, 1),
+(2, 1, 1, 2),
+(3, 6, 2, 1);

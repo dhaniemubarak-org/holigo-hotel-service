@@ -1,7 +1,5 @@
 package id.holigo.services.holigohotelservice.services;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +8,7 @@ import org.springframework.stereotype.Service;
 import id.holigo.services.holigohotelservice.domain.Hotels;
 import id.holigo.services.holigohotelservice.repositories.HotelRepository;
 import id.holigo.services.holigohotelservice.web.mappers.HotelMapper;
-import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelDetailInformationDto;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelDto;
-import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelInformationDto;
-import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelPolicyDto;
 import lombok.extern.slf4j.Slf4j;
 
 @Service

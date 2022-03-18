@@ -18,6 +18,6 @@ public class HotelRoomDto {
     private Integer maxOccupancy;
     private String description;
     private List<RoomImageDto> images;
-    private List<String> mainAmenities;
+    private List<RoomMainAmenities> mainAmenities;
     private List<RoomAmenityDto> amenities;
 }

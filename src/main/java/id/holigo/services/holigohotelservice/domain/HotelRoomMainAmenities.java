@@ -25,20 +25,20 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "facilities")
-public class Facilities {
+@Table(name = "hotel_room_main_amenities")
+public class HotelRoomMainAmenities {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    public Long id;
 
     @ManyToOne
-    @JoinColumn(name = "facility_category_id")
-    private FacilityCategories category;
+    @JoinColumn(name = "hotel_room_id")
+    private HotelRooms hotelRooms;
 
-    private String name;
-
-    private Short isShow;
+    @ManyToOne
+    @JoinColumn(name = "main_amenity_id")
+    private MainAmenities mainAmenity;
 
     @CreationTimestamp
     private Timestamp createdAt;

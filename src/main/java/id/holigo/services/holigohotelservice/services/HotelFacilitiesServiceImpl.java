@@ -6,11 +6,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import id.holigo.services.holigohotelservice.domain.AmenityCategories;
 import id.holigo.services.holigohotelservice.domain.FacilityCategories;
 import id.holigo.services.holigohotelservice.domain.HotelFacilities;
+import id.holigo.services.holigohotelservice.domain.HotelRoomAmenities;
+import id.holigo.services.holigohotelservice.domain.HotelRooms;
 import id.holigo.services.holigohotelservice.domain.Hotels;
 import id.holigo.services.holigohotelservice.repositories.HotelFacilitiesRepository;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelFacilityDto;
+import id.holigo.services.holigohotelservice.web.model.detailHotel.hotelRooms.RoomAmenityDto;
+import id.holigo.services.holigohotelservice.repositories.HotelRoomAmenitiesRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -19,6 +24,9 @@ public class HotelFacilitiesServiceImpl implements HotelFacilitiesService {
 
     @Autowired
     private HotelFacilitiesRepository hotelFacilitiesRepository;
+
+    @Autowired
+    private HotelRoomAmenitiesRepository hotelRoomAmenitiesRepository;
 
     @Override
     public List<HotelFacilityDto> getFacilityHotel(Hotels hotelId) {
@@ -40,4 +48,24 @@ public class HotelFacilitiesServiceImpl implements HotelFacilitiesService {
         });
         return facilityDto;
     }
+
+    @Override
+    public List<RoomAmenityDto> getAmenitiesHotelRoom(HotelRooms hotelRoom){
+        List<AmenityCategories> roomAmenities = hotelRoomAmenitiesRepository.findAllByHotelRoom(hotelRoom);
+        List<RoomAmenityDto> roomAmenityDtos = new ArrayList<>();
+        roomAmenities.stream().forEach((categories) -> {
+            RoomAmenityDto roomAmenityDto = new RoomAmenityDto();
+            roomAmenityDto.setCategory(categories.getName());
+            List<HotelRoomAmenities> listAmenities = hotelRoomAmenitiesRepository.findByCategory(categories);
+            List<String> stringAmenities = new ArrayList<>();
+            listAmenities.stream().forEach((amnty) -> {
+                stringAmenities.add(amnty.getAmenities().getName());
+            });
+            roomAmenityDto.setList(stringAmenities);
+
+            roomAmenityDtos.add(roomAmenityDto);
+        });
+        return roomAmenityDtos;
+    }
+
 }

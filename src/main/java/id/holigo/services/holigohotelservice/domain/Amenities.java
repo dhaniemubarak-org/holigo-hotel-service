@@ -25,16 +25,16 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "facilities")
-public class Facilities {
+@Table(name = "amenities")
+public class Amenities {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "facility_category_id")
-    private FacilityCategories category;
+    @JoinColumn(name = "amenity_category_id")
+    private AmenityCategories category;
 
     private String name;
 
@@ -44,5 +44,5 @@ public class Facilities {
     private Timestamp createdAt;
 
     @UpdateTimestamp
-    private Timestamp updatedAt;
+    private Timestamp updatedAt; 
 }

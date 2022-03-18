@@ -21,5 +21,6 @@ public interface HotelMapper {
     @Mapping(target = "policy", ignore = true)
     @Mapping(target = "additionalInformations", ignore = true)
     @Mapping(target =  "facilities", ignore = true)
+    @Mapping(target = "rooms", ignore = true)
     public HotelDto hotelsToHotelDto(Hotels hotel);
 }
