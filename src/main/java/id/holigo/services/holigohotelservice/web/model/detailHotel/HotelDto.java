@@ -27,7 +27,7 @@ public class HotelDto {
     private HotelDescriptionDto description;
     private List<HotelRulesDto> rules;
     private HotelPolicyDto policy;
-    private HotelReviewDto holigoReview;
+    private HoligoReviewDto holigoReview;
     private List<HotelFacilityDto> facilities;
     private List<HotelRoomDto> rooms;
 }

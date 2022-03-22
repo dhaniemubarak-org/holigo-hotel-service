@@ -37,9 +37,10 @@ public class HotelRules {
     @JoinColumn(name = "hotel_id")
     private Hotels hotel;
 
-    @Column(name = "key")
+    @Column(name = "rules_key")
     private String label;
 
+    @Column(name = "rules_value")
     private String value;
 
     @CreationTimestamp

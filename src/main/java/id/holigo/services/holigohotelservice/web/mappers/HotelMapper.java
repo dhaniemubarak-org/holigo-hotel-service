@@ -4,7 +4,9 @@ import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import id.holigo.services.holigohotelservice.domain.HotelAvailable;
 import id.holigo.services.holigohotelservice.domain.Hotels;
+import id.holigo.services.holigohotelservice.web.model.DetailHotelForListDto;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelDto;
 
 @Mapper
@@ -23,4 +25,28 @@ public interface HotelMapper {
     @Mapping(target =  "facilities", ignore = true)
     @Mapping(target = "rooms", ignore = true)
     public HotelDto hotelsToHotelDto(Hotels hotel);
+
+    @Mapping(target = "imageUrl", ignore = true)
+    @Mapping(target = "tag", ignore = true)
+    @Mapping(target = "ratingReviews", ignore = true)
+    @Mapping(target = "location", ignore = true)
+    @Mapping(target = "facilities", ignore = true)
+    @Mapping(target = "amenities", ignore = true)
+    @Mapping(target = "price", ignore = true)
+    @Mapping(target = "freeBreakfast", ignore = true)
+    @Mapping(target = "refundable", ignore = true)
+    @Mapping(target = "freeRefundable", ignore = true)
+    public DetailHotelForListDto hotelAvailableToDetailHotelForUserDto(HotelAvailable hotelAvailable);
+
+    @Mapping(target = "imageUrl", ignore = true)
+    @Mapping(target = "tag", ignore = true)
+    @Mapping(target = "ratingReviews", ignore = true)
+    @Mapping(target = "location", ignore = true)
+    @Mapping(target = "facilities", ignore = true)
+    @Mapping(target = "amenities", ignore = true)
+    @Mapping(target = "price", ignore = true)
+    @Mapping(target = "freeBreakfast", ignore = true)
+    @Mapping(target = "refundable", ignore = true)
+    @Mapping(target = "freeRefundable", ignore = true)
+    public HotelAvailable detailHotelDtoToHotelAvailable(DetailHotelForListDto detailHotelForListDto);
 }

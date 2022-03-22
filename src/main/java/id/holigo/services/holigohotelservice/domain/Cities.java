@@ -50,6 +50,6 @@ public class Cities {
     @UpdateTimestamp
     private Timestamp updatedAt;
     
-    @OneToMany
+    @OneToMany(mappedBy = "city")
     private List<HotelAddresses> hotel;
 }

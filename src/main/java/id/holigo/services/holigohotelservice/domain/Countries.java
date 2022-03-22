@@ -37,7 +37,7 @@ public class Countries {
     @UpdateTimestamp
     private Timestamp updatedAt;
 
-    @OneToMany
+    @OneToMany(mappedBy = "country")
     private List<HotelAddresses> hotel;
 
 }

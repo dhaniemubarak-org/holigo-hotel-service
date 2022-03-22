@@ -54,7 +54,7 @@ public class Districts {
     @UpdateTimestamp
     private Timestamp updatedAt;
 
-    @OneToMany
+    @OneToMany(mappedBy = "district")
     private List<HotelAddresses> hotel;
 
 }

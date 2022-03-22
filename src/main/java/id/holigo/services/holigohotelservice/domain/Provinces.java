@@ -46,7 +46,7 @@ public class Provinces {
     @UpdateTimestamp
     private Timestamp updatedAt;
 
-    @OneToMany
+    @OneToMany(mappedBy = "province")
     private List<HotelAddresses> hotel;
 
 }
