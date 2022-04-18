@@ -29,12 +29,12 @@ import lombok.Setter;
 public class HotelRoomImages {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @ManyToOne
     @JoinColumn(name = "hotel_id")
-    private Hotels hotel;
+    private Hotel hotel;
 
     @ManyToOne
     @JoinColumn(name = "hotel_room_id")

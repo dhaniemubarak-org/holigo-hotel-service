@@ -1,6 +1,7 @@
 package id.holigo.services.holigohotelservice.web.controller;
 
 import java.sql.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -35,6 +36,13 @@ public class HotelAvailableController {
         return new ResponseEntity<HotelDto>(hotelDto, HttpStatus.OK);
     }
 
+    @GetMapping(path = "/{id}/test")
+    public ResponseEntity<List<DetailHotelForListDto>> getAllAvailable(@PathVariable("id") Long id,
+            @RequestParam("checkIn") Date checkIn) {
+        List<DetailHotelForListDto> hotelDto = hotelAvailableService.generateAvailableHotel(checkIn);
+        return new ResponseEntity<List<DetailHotelForListDto>>(hotelDto, HttpStatus.OK);
+    }
+
     @GetMapping(path = "")
     public ResponseEntity<HotelAvailablePaginateForUser> getAllAvailable(
             @RequestParam(value = "pageNumber", required = false) Integer pageNumber,
@@ -44,7 +52,9 @@ public class HotelAvailableController {
             @RequestParam(value = "orderBy", required = false) String orderBy,
             @RequestParam(value = "rating", required = false) String rating,
             @RequestParam(value = "facilities", required = false) String facilities,
-            @RequestParam(value = "types", required = false) String types){
+            @RequestParam(value = "types", required = false) String types,
+            @RequestParam(value = "checkIn", required = false) Date checkIn,
+            @RequestParam(value = "checkOut", required = false) Date checkOut) {
         if (pageNumber == null || pageNumber < 0) {
             pageNumber = DEFAULT_PAGE_NUMBER;
         }
@@ -77,7 +87,7 @@ public class HotelAvailableController {
         }
 
         HotelAvailablePaginateForUser hotelAvailableList = hotelAvailableService.listHotelForUser(cityId,
-                PageRequest.of(pageNumber, pageSize, sort), rating, facilities, types);
+                PageRequest.of(pageNumber, pageSize, sort), rating, facilities, types, checkIn, checkOut);
 
         return new ResponseEntity<>(hotelAvailableList, HttpStatus.OK);
     }

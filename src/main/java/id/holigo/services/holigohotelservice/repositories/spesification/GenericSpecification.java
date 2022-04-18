@@ -10,8 +10,6 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import id.holigo.services.holigohotelservice.domain.HotelAvailable;
-
 public class GenericSpecification<T> implements Specification<T> {
 
     private List<SearchCriteria> list;

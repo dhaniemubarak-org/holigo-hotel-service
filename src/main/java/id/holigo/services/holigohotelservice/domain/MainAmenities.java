@@ -29,7 +29,7 @@ import lombok.Setter;
 public class MainAmenities {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     private String label;

@@ -29,11 +29,11 @@ import lombok.Setter;
 public class Facilities {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "facility_category_id")
+    @JoinColumn(name = "category_id")
     private FacilityCategories category;
 
     private String name;

@@ -32,7 +32,7 @@ import lombok.Setter;
 public class PopularCities {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "SMALLINT")
     private Integer id;
 

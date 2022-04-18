@@ -36,12 +36,14 @@ import lombok.Setter;
 public class HotelRooms {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "hotel_id")
-    private Hotels hotel;
+    private Hotel hotel;
+
+    private String roomSupplierId;
 
     private String name;
 

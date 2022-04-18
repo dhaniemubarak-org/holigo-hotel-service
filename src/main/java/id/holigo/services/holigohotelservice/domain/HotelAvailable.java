@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -28,12 +29,13 @@ import lombok.Setter;
 @Entity
 @Table(name = "hotel_available")
 public class HotelAvailable {
-    
+
     @Id
     private Long id;
 
     private String name;
 
+    @Lob
     private String imageUrl;
 
     private String type;
@@ -42,6 +44,7 @@ public class HotelAvailable {
 
     private Double rating;
 
+    @Lob
     private String ratingReviews;
 
     private String location;
@@ -54,8 +57,10 @@ public class HotelAvailable {
     @JoinColumn(name = "province_id")
     private Provinces provinceId;
 
+    @Lob
     private String facilities;
 
+    @Lob
     private String amenities;
 
     private Double latitude;
@@ -65,7 +70,7 @@ public class HotelAvailable {
     private Date checkIn;
 
     private Date checkOut;
-    
+
     private String city;
 
     private String fareType;
@@ -77,6 +82,8 @@ public class HotelAvailable {
     private BigDecimal point;
 
     private String price;
+
+    private Long hotelId;
 
     @Column(columnDefinition = "TINYINT")
     private Short freeBreakfast;

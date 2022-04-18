@@ -31,12 +31,12 @@ import lombok.Setter;
 public class HotelStories {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "hotel_id")
-    private Hotels hotel;
+    private Hotel hotel;
 
     private String videoUrl;
 

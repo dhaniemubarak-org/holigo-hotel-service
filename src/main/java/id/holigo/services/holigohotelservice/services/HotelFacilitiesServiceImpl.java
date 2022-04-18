@@ -11,7 +11,7 @@ import id.holigo.services.holigohotelservice.domain.FacilityCategories;
 import id.holigo.services.holigohotelservice.domain.HotelFacilities;
 import id.holigo.services.holigohotelservice.domain.HotelRoomAmenities;
 import id.holigo.services.holigohotelservice.domain.HotelRooms;
-import id.holigo.services.holigohotelservice.domain.Hotels;
+import id.holigo.services.holigohotelservice.domain.Hotel;
 import id.holigo.services.holigohotelservice.repositories.HotelFacilitiesRepository;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelFacilityDto;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.hotelRooms.RoomAmenityDto;
@@ -29,7 +29,7 @@ public class HotelFacilitiesServiceImpl implements HotelFacilitiesService {
     private HotelRoomAmenitiesRepository hotelRoomAmenitiesRepository;
 
     @Override
-    public List<HotelFacilityDto> getFacilityHotel(Hotels hotelId) {
+    public List<HotelFacilityDto> getFacilityHotel(Hotel hotelId) {
         List<FacilityCategories> categoryFacilities = hotelFacilitiesRepository.findAllByHotelId(hotelId);
         List<HotelFacilityDto> facilityDto = new ArrayList<>();
         categoryFacilities.stream().forEach((facilityCategories) -> {
@@ -37,7 +37,7 @@ public class HotelFacilitiesServiceImpl implements HotelFacilitiesService {
             HotelFacilityDto hotelFacilityDto = new HotelFacilityDto();
             hotelFacilityDto.setIcon(facilityCategories.getIcon());
             hotelFacilityDto.setCategory(facilityCategories.getName());
-            List<HotelFacilities> listFacilities = hotelFacilitiesRepository.findByCategory(facilityCategories);
+            List<HotelFacilities> listFacilities = hotelFacilitiesRepository.findByCategoryAndHotels(facilityCategories, hotelId);
             List<String> stringFacilities = new ArrayList<>();
             listFacilities.stream().forEach((fclty) -> {
                 stringFacilities.add(fclty.getFacilities().getName());
@@ -50,13 +50,14 @@ public class HotelFacilitiesServiceImpl implements HotelFacilitiesService {
     }
 
     @Override
-    public List<RoomAmenityDto> getAmenitiesHotelRoom(HotelRooms hotelRoom){
+    public List<RoomAmenityDto> getAmenitiesHotelRoom(HotelRooms hotelRoom) {
         List<AmenityCategories> roomAmenities = hotelRoomAmenitiesRepository.findAllByHotelRoom(hotelRoom);
         List<RoomAmenityDto> roomAmenityDtos = new ArrayList<>();
         roomAmenities.stream().forEach((categories) -> {
             RoomAmenityDto roomAmenityDto = new RoomAmenityDto();
             roomAmenityDto.setCategory(categories.getName());
-            List<HotelRoomAmenities> listAmenities = hotelRoomAmenitiesRepository.findByCategory(categories);
+            List<HotelRoomAmenities> listAmenities = hotelRoomAmenitiesRepository.findByCategoryAndRooms(categories,
+                    hotelRoom);
             List<String> stringAmenities = new ArrayList<>();
             listAmenities.stream().forEach((amnty) -> {
                 stringAmenities.add(amnty.getAmenities().getName());

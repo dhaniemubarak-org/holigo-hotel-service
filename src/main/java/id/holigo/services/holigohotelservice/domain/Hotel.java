@@ -32,11 +32,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "hotels")
-public class Hotels {
+@Table(name = "hotel")
+public class Hotel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;

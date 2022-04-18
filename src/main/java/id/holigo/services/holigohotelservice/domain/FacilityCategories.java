@@ -30,7 +30,7 @@ import lombok.Setter;
 public class FacilityCategories {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -47,6 +47,6 @@ public class FacilityCategories {
     private List<Facilities> facilities;
 
     @OneToMany(mappedBy = "category")
-    Set<HotelFacilities> hotelFacilities;
+    private Set<HotelFacilities> hotelFacilities;
     
 }

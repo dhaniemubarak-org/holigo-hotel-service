@@ -31,12 +31,12 @@ import lombok.Setter;
 public class HotelNearbyPlaces {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "hotel_id")
-    private Hotels hotel;
+    private Hotel hotel;
 
     private String name;
 
@@ -45,6 +45,10 @@ public class HotelNearbyPlaces {
     private String distance;
 
     private String icon;
+
+    private Double latitude;
+
+    private Double longitude;
 
     @CreationTimestamp
     private Timestamp createdAt;

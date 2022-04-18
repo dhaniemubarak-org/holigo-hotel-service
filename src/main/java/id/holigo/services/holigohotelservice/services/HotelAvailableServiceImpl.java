@@ -1,12 +1,12 @@
 package id.holigo.services.holigohotelservice.services;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Predicate;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 import id.holigo.services.holigohotelservice.domain.Cities;
 import id.holigo.services.holigohotelservice.domain.HotelAvailable;
-import id.holigo.services.holigohotelservice.domain.Hotels;
+import id.holigo.services.holigohotelservice.domain.Hotel;
 import id.holigo.services.holigohotelservice.repositories.CitiesRepository;
 import id.holigo.services.holigohotelservice.repositories.HotelAvailableRepository;
 import id.holigo.services.holigohotelservice.repositories.HotelRepository;
@@ -90,25 +90,37 @@ public class HotelAvailableServiceImpl implements HotelAvailableService {
                 // hotelDto.setAdditionalInformations(additionalInformation);
                 // hotelDto.setPolicy(hotelPolicy);
                 // hotelDto.setHotelInformation(hotelInformationDto);
-                Optional<Hotels> hotel = hotelRepository.findById(id);
-                log.info("Response Hotel -> {}", hotel.get().getFacilities());
-                hotelDto = hotelMapper.hotelsToHotelDto(hotel.get());
-                return hotelDto;
+                log.info("Hotels ID -> {}", id);
+                Optional<Hotel> hotel = hotelRepository.findById(id);
+                if (hotel.isPresent()) {
+                        log.info("Response Hotel -> {}", hotel.get().getFacilities());
+                        hotelDto = hotelMapper.hotelsToHotelDto(hotel.get());
+                        return hotelDto;
+                } else {
+                        return null;
+                }
 
         }
 
         @Override
         public HotelAvailablePaginateForUser listHotelForUser(Long destination, PageRequest pageRequest,
-                        String rating, String facilities, String types) {
+                        String rating, String facilities, String types, Date checkIn, Date checkOut) {
                 HotelAvailablePaginateForUser hotelAvailablePaginateForUser;
                 Page<HotelAvailable> hotelPage;
                 GenericSpecification<HotelAvailable> andSpecification = new GenericSpecification<HotelAvailable>();
                 GenericOrSpecification<HotelAvailable> orSpecification = new GenericOrSpecification<HotelAvailable>();
-
+                log.info("City Id -> {}", destination);
                 Optional<Cities> city = citiesRepository.findById(destination);
 
+                if (!city.isPresent()) {
+                        return null;
+                }
+
                 andSpecification.add(new SearchCriteria("cityId", city.get(), SearchOperation.EQUAL));
-                // orSpecification.add(new SearchCriteria("cityId", city.get(), SearchOperation.EQUAL));
+                andSpecification.add(new SearchCriteria("checkIn", checkIn, SearchOperation.EQUAL));
+
+                // orSpecification.add(new SearchCriteria("cityId", city.get(),
+                // SearchOperation.EQUAL));
 
                 if (rating != null && !rating.equals("")) {
                         List<String> ratings = new ArrayList<String>(Arrays.asList(rating.split(",")));
@@ -148,9 +160,6 @@ public class HotelAvailableServiceImpl implements HotelAvailableService {
                                 orSpecification.add(new SearchCriteria("type", hotelType, SearchOperation.EQUAL));
                         }
                 }
-
-                // hotelPage = hotelAvailableRepository.findAllByCityId(city.get(),
-                // pageRequest);
                 hotelPage = hotelAvailableRepository.findAll(Specification.where(orSpecification).and(andSpecification),
                                 pageRequest);
 
@@ -167,7 +176,26 @@ public class HotelAvailableServiceImpl implements HotelAvailableService {
         @Override
         public void postHotelAvailable(DetailHotelForListDto detailHotelForListDto) {
                 HotelAvailable hotelAvailable = hotelMapper.detailHotelDtoToHotelAvailable(detailHotelForListDto);
-                hotelAvailableRepository.save(hotelAvailable);
+                Optional<HotelAvailable> fetchHotelAvailable = hotelAvailableRepository
+                                .findByNameAndCheckIn(hotelAvailable.getName(), hotelAvailable.getCheckIn());
+                if (!fetchHotelAvailable.isPresent()) {
+                        hotelAvailableRepository.save(hotelAvailable);
+                }
+        }
+
+        @Override
+        @Transactional
+        public List<DetailHotelForListDto> generateAvailableHotel(Date checkIn) {
+                List<Hotel> listHotel = hotelRepository.findAll();
+                List<HotelDto> listHotelDto = listHotel.stream().map(hotelMapper::hotelsToHotelDto).toList();
+                List<DetailHotelForListDto> listDetailHotel = listHotelDto.stream()
+                                .map(hotelMapper::hotelDtoToDetailHotelForListDto).toList();
+                for (DetailHotelForListDto detailHotelForListDto : listDetailHotel) {
+                        log.info("Nama hotel -> {}", detailHotelForListDto.getName());
+                        detailHotelForListDto.setCheckIn(checkIn);
+                        postHotelAvailable(detailHotelForListDto);
+                }
+                return listDetailHotel;
         }
 
 }

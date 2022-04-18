@@ -31,10 +31,14 @@ import lombok.Setter;
 public class Cities {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String nameEn;
+
+    private String nameId;
+
+    private String code;
 
     @ManyToOne
     @JoinColumn(name = "country_id", nullable = false)

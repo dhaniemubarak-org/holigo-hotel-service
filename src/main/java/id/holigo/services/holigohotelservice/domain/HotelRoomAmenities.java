@@ -25,16 +25,14 @@ import lombok.Setter;
 public class HotelRoomAmenities {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @MapsId("roomId")
     @JoinColumn(name = "hotel_room_id")
     private HotelRooms rooms;
 
     @ManyToOne
-    @MapsId("categoryId")
     @JoinColumn(name = "category_id")
     private AmenityCategories category;
 

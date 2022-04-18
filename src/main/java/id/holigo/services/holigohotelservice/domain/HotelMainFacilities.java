@@ -34,7 +34,7 @@ public class HotelMainFacilities {
 
     @ManyToOne
     @JoinColumn(name = "hotel_id")
-    private Hotels hotel;
+    private Hotel hotel;
 
     @ManyToOne
     @JoinColumn(name = "main_facility_id")

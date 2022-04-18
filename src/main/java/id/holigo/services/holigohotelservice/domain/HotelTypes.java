@@ -27,7 +27,7 @@ import lombok.Setter;
 public class HotelTypes {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Short id;
 
     private String name;

@@ -1,5 +1,7 @@
 package id.holigo.services.holigohotelservice.web.mappers;
 
+import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import id.holigo.services.holigohotelservice.domain.Cities;
 import id.holigo.services.holigohotelservice.domain.HotelAvailable;
 import id.holigo.services.holigohotelservice.domain.HotelPolicies;
-import id.holigo.services.holigohotelservice.domain.Hotels;
+import id.holigo.services.holigohotelservice.domain.Hotel;
 import id.holigo.services.holigohotelservice.domain.Provinces;
 import id.holigo.services.holigohotelservice.repositories.CitiesRepository;
 import id.holigo.services.holigohotelservice.repositories.ProvinceRepository;
@@ -21,12 +23,14 @@ import id.holigo.services.holigohotelservice.web.model.DetailHotelForListDto;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelDescriptionDto;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelDto;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelFacilityDto;
+import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelImagesDto;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelLocationDto;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelPolicyDto;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelPriceDto;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelTagDto;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.RatingReviewDto;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.hotelRooms.HotelRoomDto;
+import id.holigo.services.holigohotelservice.web.model.detailHotel.hotelRooms.RoomAmenityDto;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -48,7 +52,7 @@ public class HotelMapperDecorator implements HotelMapper {
     private ProvinceRepository provinceRepository;
 
     @Override
-    public HotelDto hotelsToHotelDto(Hotels hotels) {
+    public HotelDto hotelsToHotelDto(Hotel hotels) {
         HotelDto hotelDto = hotelMapper.hotelsToHotelDto(hotels);
 
         HotelDescriptionDto descriptionDto = new HotelDescriptionDto();
@@ -183,10 +187,10 @@ public class HotelMapperDecorator implements HotelMapper {
         hotelAvailable.setName(detailHotelForListDto.getName());
         hotelAvailable.setType(detailHotelForListDto.getType());
 
-        try{
+        try {
             String images = objectMapper.writeValueAsString(detailHotelForListDto.getImageUrl());
             hotelAvailable.setImageUrl(images);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -236,7 +240,7 @@ public class HotelMapperDecorator implements HotelMapper {
         hotelAvailable.setLongitude(detailHotelForListDto.getLongitude());
         hotelAvailable.setCheckIn(detailHotelForListDto.getCheckIn());
         hotelAvailable.setCheckOut(detailHotelForListDto.getCheckOut());
-        hotelAvailable.setCity(city.get().getName() + ", " + province.get().getName());
+        hotelAvailable.setCity(city.get().getNameEn() + ", " + province.get().getName());
         hotelAvailable.setFareType(detailHotelForListDto.getFareType());
         hotelAvailable.setFareAmount(detailHotelForListDto.getFareAmount());
         hotelAvailable.setNormalFare(detailHotelForListDto.getNormalFare());
@@ -255,7 +259,62 @@ public class HotelMapperDecorator implements HotelMapper {
         hotelAvailable.setRefundable(refundable);
         hotelAvailable.setFreeRefundable(freeRefundable);
 
+        hotelAvailable.setHotelId(Long.valueOf(detailHotelForListDto.getId()));
+
         return hotelAvailable;
+    }
+
+    @Override
+    public DetailHotelForListDto hotelDtoToDetailHotelForListDto(HotelDto hotelDto) {
+        DetailHotelForListDto detailHotelForListDto = hotelMapper.hotelDtoToDetailHotelForListDto(hotelDto);
+
+        detailHotelForListDto.setLatitude(hotelDto.getLocation().getLatitude());
+        detailHotelForListDto.setLongitude(hotelDto.getLocation().getLongitude());
+        detailHotelForListDto.setCity(hotelDto.getLocation().getCity() + ", " + hotelDto.getLocation().getProvince());
+        detailHotelForListDto.setFareType("PERNIGHT");
+        detailHotelForListDto.setFareAmount(new BigDecimal("666666.00"));
+        detailHotelForListDto.setNormalFare(new BigDecimal("777777.00"));
+        detailHotelForListDto.setPoint(new BigDecimal("3333"));
+
+        HotelPriceDto price = new HotelPriceDto();
+        price.setFareAmount(new BigDecimal("666666.00"));
+        price.setNormalFare(new BigDecimal("777777.00"));
+        price.setPoint(new BigDecimal("3333.00"));
+        price.setType("PERNIGHT");
+        detailHotelForListDto.setPrice(price);
+
+        List<String> listFacilities = new ArrayList<>();
+        for (HotelFacilityDto hotelFacilityDto : hotelDto.getFacilities()) {
+            for (String facility : hotelFacilityDto.getItems()) {
+                listFacilities.add(facility);
+            }
+        }
+        detailHotelForListDto.setFacilities(listFacilities);
+
+        List<String> listAmenities = new ArrayList<>();
+        for (HotelRoomDto hotelRoomDto : hotelDto.getRooms()) {
+            for (RoomAmenityDto amenities : hotelRoomDto.getAmenities()) {
+                for (String textAmenities : amenities.getList()) {
+                    listAmenities.add(textAmenities);
+                }
+            }
+        }
+        detailHotelForListDto.setAmenities(listAmenities);
+
+        List<String> imageUrl = new ArrayList<>();
+        for (HotelImagesDto hotelImage : hotelDto.getImages().stream().limit(3).toList()) {
+            imageUrl.add(hotelImage.getImageUrl());
+        }
+        detailHotelForListDto.setImageUrl(imageUrl);
+
+        detailHotelForListDto.setFreeBreakfast(false);
+        detailHotelForListDto.setRefundable(false);
+        detailHotelForListDto.setFreeRefundable(false);
+
+        detailHotelForListDto.setCheckIn(Date.valueOf("2022-04-15"));
+        detailHotelForListDto.setCheckIn(Date.valueOf("2022-04-16"));
+
+        return detailHotelForListDto;
     }
 
 }

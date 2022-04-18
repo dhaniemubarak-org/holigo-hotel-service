@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelLocationDto;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelPriceDto;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelTagDto;

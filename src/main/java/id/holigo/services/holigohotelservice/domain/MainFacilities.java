@@ -29,7 +29,7 @@ import lombok.Setter;
 public class MainFacilities {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Short id;
 
     private String label;
@@ -43,5 +43,5 @@ public class MainFacilities {
     private Timestamp updatedAt;
 
     @ManyToMany(mappedBy = "mainFacility")
-    private Set<Hotels> hotels;
+    private Set<Hotel> hotels;
 }
