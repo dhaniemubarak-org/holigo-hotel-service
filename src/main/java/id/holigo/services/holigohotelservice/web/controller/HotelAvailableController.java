@@ -38,8 +38,8 @@ public class HotelAvailableController {
 
     @GetMapping(path = "/{id}/test")
     public ResponseEntity<List<DetailHotelForListDto>> getAllAvailable(@PathVariable("id") Long id,
-            @RequestParam("checkIn") Date checkIn) {
-        List<DetailHotelForListDto> hotelDto = hotelAvailableService.generateAvailableHotel(checkIn);
+                                                                       @RequestParam("checkIn") Date checkIn, @RequestParam("cityId") Integer cityId) {
+        List<DetailHotelForListDto> hotelDto = hotelAvailableService.generateAvailableHotel(checkIn, cityId);
         return new ResponseEntity<List<DetailHotelForListDto>>(hotelDto, HttpStatus.OK);
     }
 
@@ -93,8 +93,8 @@ public class HotelAvailableController {
     }
 
     @PostMapping(path = "")
-    public ResponseEntity<?> postAvailable(@RequestBody DetailHotelForListDto detailHotelForListDto) {
-        hotelAvailableService.postHotelAvailable(detailHotelForListDto);
+    public ResponseEntity<?> postAvailable(@RequestBody DetailHotelForListDto detailHotelForListDto, @RequestParam("cityId") Integer cityId) {
+        hotelAvailableService.postHotelAvailable(detailHotelForListDto, cityId);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

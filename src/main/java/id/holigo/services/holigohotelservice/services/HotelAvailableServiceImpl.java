@@ -8,6 +8,8 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import id.holigo.services.holigohotelservice.domain.HotelAddresses;
+import id.holigo.services.holigohotelservice.repositories.HotelAddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,6 +38,9 @@ public class HotelAvailableServiceImpl implements HotelAvailableService {
 
         @Autowired
         private HotelAvailableRepository hotelAvailableRepository;
+
+        @Autowired
+        private HotelAddressRepository hotelAddressRepository;
 
         @Autowired
         private HotelRepository hotelRepository;
@@ -112,7 +117,7 @@ public class HotelAvailableServiceImpl implements HotelAvailableService {
                 log.info("City Id -> {}", destination);
                 Optional<Cities> city = citiesRepository.findById(destination);
 
-                if (!city.isPresent()) {
+                if (city.isEmpty()) {
                         return null;
                 }
 
@@ -174,26 +179,35 @@ public class HotelAvailableServiceImpl implements HotelAvailableService {
         }
 
         @Override
-        public void postHotelAvailable(DetailHotelForListDto detailHotelForListDto) {
-                HotelAvailable hotelAvailable = hotelMapper.detailHotelDtoToHotelAvailable(detailHotelForListDto);
+        public void postHotelAvailable(DetailHotelForListDto detailHotelForListDto, Integer cityId) {
+                HotelAvailable hotelAvailable = hotelMapper.detailHotelDtoToHotelAvailable(detailHotelForListDto, cityId);
                 Optional<HotelAvailable> fetchHotelAvailable = hotelAvailableRepository
                                 .findByNameAndCheckIn(hotelAvailable.getName(), hotelAvailable.getCheckIn());
-                if (!fetchHotelAvailable.isPresent()) {
+                if (fetchHotelAvailable.isEmpty()) {
                         hotelAvailableRepository.save(hotelAvailable);
                 }
         }
 
         @Override
         @Transactional
-        public List<DetailHotelForListDto> generateAvailableHotel(Date checkIn) {
-                List<Hotel> listHotel = hotelRepository.findAll();
+        public List<DetailHotelForListDto> generateAvailableHotel(Date checkIn, Integer cityId) {
+                Optional<Cities> city = citiesRepository.findById(Long.valueOf(cityId));
+                if(city.isEmpty()){
+                        return null;
+                }
+                List<HotelAddresses> hotelAddresses = hotelAddressRepository.findAllByCity(city.get());
+                List<Long> listHotelId = new ArrayList<>();
+                hotelAddresses.forEach(listAddress -> {
+                        listHotelId.add(listAddress.getHotel().getId());
+                });
+                List<Hotel> listHotel = hotelRepository.findAllByIdIn(listHotelId);
                 List<HotelDto> listHotelDto = listHotel.stream().map(hotelMapper::hotelsToHotelDto).toList();
                 List<DetailHotelForListDto> listDetailHotel = listHotelDto.stream()
                                 .map(hotelMapper::hotelDtoToDetailHotelForListDto).toList();
                 for (DetailHotelForListDto detailHotelForListDto : listDetailHotel) {
                         log.info("Nama hotel -> {}", detailHotelForListDto.getName());
                         detailHotelForListDto.setCheckIn(checkIn);
-                        postHotelAvailable(detailHotelForListDto);
+                        postHotelAvailable(detailHotelForListDto, cityId);
                 }
                 return listDetailHotel;
         }

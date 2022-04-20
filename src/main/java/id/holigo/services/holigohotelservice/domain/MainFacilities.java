@@ -34,6 +34,8 @@ public class MainFacilities {
 
     private String label;
 
+    private String labelEn;
+
     private String imageUrl;
 
     @CreationTimestamp

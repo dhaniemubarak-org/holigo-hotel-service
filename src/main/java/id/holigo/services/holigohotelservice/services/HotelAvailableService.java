@@ -15,8 +15,8 @@ public interface HotelAvailableService {
     HotelAvailablePaginateForUser listHotelForUser(Long destination, PageRequest pageRequest, String rating,
             String facilities, String types, Date checkIn, Date checkOut);
 
-    void postHotelAvailable(DetailHotelForListDto detailHotelForListDto);
+    void postHotelAvailable(DetailHotelForListDto detailHotelForListDto, Integer cityId);
 
-    public List<DetailHotelForListDto> generateAvailableHotel(Date checkIn);
+    public List<DetailHotelForListDto> generateAvailableHotel(Date checkIn, Integer cityId);
 
 }

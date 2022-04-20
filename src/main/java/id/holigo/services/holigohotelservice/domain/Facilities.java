@@ -38,7 +38,9 @@ public class Facilities {
 
     private String name;
 
-    private Short isShow;
+    private String nameEn;
+
+    private Boolean isShow;
 
     @CreationTimestamp
     private Timestamp createdAt;

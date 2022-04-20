@@ -44,6 +44,10 @@ public class HotelImages {
     
     private String pathUrl;
 
+    private Boolean isMain;
+
+    private Boolean isActive;
+
     @CreationTimestamp
     private Timestamp createdAt;
 

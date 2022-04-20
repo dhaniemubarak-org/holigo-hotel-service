@@ -48,7 +48,8 @@ public interface HotelMapper {
     @Mapping(target = "freeBreakfast", ignore = true)
     @Mapping(target = "refundable", ignore = true)
     @Mapping(target = "freeRefundable", ignore = true)
-    public HotelAvailable detailHotelDtoToHotelAvailable(DetailHotelForListDto detailHotelForListDto);
+    @Mapping(target = "cityId", ignore = true)
+    public HotelAvailable detailHotelDtoToHotelAvailable(DetailHotelForListDto detailHotelForListDto, Integer cityId);
 
     @Mapping(target = "facilities", ignore = true)
     public DetailHotelForListDto hotelDtoToDetailHotelForListDto(HotelDto hotelDto);

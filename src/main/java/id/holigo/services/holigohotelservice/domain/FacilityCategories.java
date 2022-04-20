@@ -35,6 +35,8 @@ public class FacilityCategories {
 
     private String name;
 
+    private String nameEn;
+
     private String icon;
 
     @CreationTimestamp

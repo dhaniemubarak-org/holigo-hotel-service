@@ -22,8 +22,6 @@ public class HotelExternalServiceFeign implements HotelExternalService {
         ResponseEntity<HotelDtoForExternal> responseEntity = hotelExternalServiceFeignClient.getHotelByCityId(cityId,
                 pageSize, pageNumber);
 
-        // log.info("ResponseEntity Body -> {}", responseEntity.getBody());
-
         return responseEntity.getBody();
     }
 

@@ -100,11 +100,11 @@ public class PullingHotelFromExternal {
     private HotelTypeRepository hotelTypeRepository;
 
     // @Scheduled(fixedDelay = 360000)
-    public void pulling() {
+    public void pulling(Integer cityId) {
         HotelDtoForExternal hotelDtoForExternal;
         int pageNumber = 0;
         do {
-            hotelDtoForExternal = hotelExternalService.getHotelByCityId(2, 1, pageNumber);
+            hotelDtoForExternal = hotelExternalService.getHotelByCityId(cityId, 1, pageNumber);
             for (JsonNode hotel : hotelDtoForExternal.getData()) {
                 log.info("Hotel External -> {}", hotel.get("name").asText());
                 storeHotel(hotel);
@@ -218,7 +218,7 @@ public class PullingHotelFromExternal {
         for (JsonNode images : jsonHotel.get("images")) {
             Optional<HotelImages> fetchImages = hotelImageRepository.findByHotelAndCategoryAndImageUrl(hotel,
                     images.get("category").asText(), images.get("imageUrl").asText());
-            if (!fetchImages.isPresent()) {
+            if (fetchImages.isEmpty()) {
                 HotelImages hotelImages = new HotelImages();
                 hotelImages.setCategory(images.get("category").asText());
                 hotelImages.setHotel(hotel);
@@ -241,7 +241,7 @@ public class PullingHotelFromExternal {
             HotelMainFacilities hotelMainFacility = new HotelMainFacilities();
             Optional<HotelMainFacilities> fetchHotelMain = hotelMainFacilityRepository.findByHotelAndMainFacility(hotel,
                     mainFacility);
-            if (!fetchHotelMain.isPresent()) {
+            if (fetchHotelMain.isEmpty()) {
                 hotelMainFacility.setHotel(hotel);
                 hotelMainFacility.setMainFacility(mainFacility);
                 hotelMainFacilityRepository.save(hotelMainFacility);
@@ -253,7 +253,7 @@ public class PullingHotelFromExternal {
             HotelNearbyPlaces hotelNearbyPlaces = new HotelNearbyPlaces();
             Optional<HotelNearbyPlaces> fetchNearbyPlaces = hotelNearbyPlaceRepository.findByNameAndCategoryAndHotel(
                     jsonNearby.get("name").asText(), jsonNearby.get("category").asText(), hotel);
-            if (!fetchNearbyPlaces.isPresent()) {
+            if (fetchNearbyPlaces.isEmpty()) {
                 hotelNearbyPlaces.setCategory(jsonNearby.get("category").asText());
                 hotelNearbyPlaces.setName(jsonNearby.get("name").asText());
                 hotelNearbyPlaces.setDistance(jsonNearby.get("distance").asText());
@@ -268,7 +268,7 @@ public class PullingHotelFromExternal {
             HotelPopularAreas hotelPopularAreas = new HotelPopularAreas();
             Optional<HotelPopularAreas> fetchPopular = hotelPopularAreaRepository.findByNameAndCategoryAndHotel(
                     jsonPopularAreas.get("name").asText(), jsonPopularAreas.get("category").asText(), hotel);
-            if (!fetchPopular.isPresent()) {
+            if (fetchPopular.isEmpty()) {
                 hotelPopularAreas.setCategory(jsonPopularAreas.get("category").asText());
                 hotelPopularAreas.setName(jsonPopularAreas.get("name").asText());
                 hotelPopularAreas.setDistance(jsonPopularAreas.get("distance").asText());
@@ -281,7 +281,7 @@ public class PullingHotelFromExternal {
 
         HotelDescription hotelDescription = new HotelDescription();
         Optional<HotelDescription> fetchDescription = hotelDescriptionRepository.findByHotel(hotel);
-        if (!fetchDescription.isPresent()) {
+        if (fetchDescription.isEmpty()) {
             hotelDescription.setHotel(hotel);
             hotelDescription.setText(jsonHotel.get("description").asText());
             hotelDescription.setType("long");
@@ -290,7 +290,7 @@ public class PullingHotelFromExternal {
 
         HotelPolicies hotelPolicy = new HotelPolicies();
         Optional<HotelPolicies> fetchPolicies = hotelPolicyRepository.findByHotel(hotel);
-        if (!fetchPolicies.isPresent()) {
+        if (fetchPolicies.isEmpty()) {
             hotelPolicy.setHotel(hotel);
             hotelPolicy.setType("long");
             hotelPolicy.setText(jsonHotel.get("policy").asText());
@@ -322,7 +322,7 @@ public class PullingHotelFromExternal {
                 HotelFacilities hotelFacilities = new HotelFacilities();
                 Optional<HotelFacilities> fetchHotelFacilites = hotelFacilitiesRepository
                         .findByHotelsAndFacilities(hotel, facility);
-                if (!fetchHotelFacilites.isPresent()) {
+                if (fetchHotelFacilites.isEmpty()) {
                     hotelFacilities.setCategory(facility.getCategory());
                     hotelFacilities.setFacilities(facility);
                     hotelFacilities.setHotels(hotel);
@@ -390,7 +390,7 @@ public class PullingHotelFromExternal {
                 HotelRoomAmenities hotelRoomAmenities = new HotelRoomAmenities();
                 Optional<HotelRoomAmenities> fetchHotelRoomAmenity = hotelRoomAmenitiesRepository
                         .findByAmenitiesAndRooms(amenities, hotelRoom);
-                if (!fetchHotelRoomAmenity.isPresent()) {
+                if (fetchHotelRoomAmenity.isEmpty()) {
                     hotelRoomAmenities.setAmenities(amenities);
                     hotelRoomAmenities.setCategory(amenityCategories);
                     hotelRoomAmenities.setRooms(hotelRoom);
@@ -403,7 +403,7 @@ public class PullingHotelFromExternal {
             HotelRoomImages hotelRoomImages = new HotelRoomImages();
             Optional<HotelRoomImages> fetchHotelRoomImages = hotelRoomImageRepository.findByRoomAndImageUrl(hotelRoom,
                     jsonImages.get("imageUrl").asText());
-            if (!fetchHotelRoomImages.isPresent()) {
+            if (fetchHotelRoomImages.isEmpty()) {
                 hotelRoomImages.setCategory(jsonImages.get("category").asText());
                 hotelRoomImages.setHotel(hotel);
                 hotelRoomImages.setImageUrl(jsonImages.get("imageUrl").asText());

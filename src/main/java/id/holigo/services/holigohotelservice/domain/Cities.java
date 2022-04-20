@@ -40,12 +40,14 @@ public class Cities {
 
     private String code;
 
+    private Boolean isActive;
+
     @ManyToOne
     @JoinColumn(name = "country_id", nullable = false)
     private Countries country;
 
     @ManyToOne
-    @JoinColumn(name = "province_id", nullable = false)
+    @JoinColumn(name = "province_id")
     private Provinces province;
 
     @CreationTimestamp

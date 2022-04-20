@@ -42,6 +42,9 @@ public class HotelDescription {
     @Lob
     private String text;
 
+    @Lob
+    private String textEn;
+
     @CreationTimestamp
     private Timestamp createdAt;
 

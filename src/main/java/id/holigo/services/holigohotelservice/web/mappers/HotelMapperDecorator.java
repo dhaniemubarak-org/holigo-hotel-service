@@ -9,6 +9,7 @@ import java.util.Optional;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import id.holigo.services.holigohotelservice.repositories.HotelMainFacilityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import id.holigo.services.holigohotelservice.domain.Cities;
@@ -51,12 +52,16 @@ public class HotelMapperDecorator implements HotelMapper {
     @Autowired
     private ProvinceRepository provinceRepository;
 
+    @Autowired
+    private HotelMainFacilityRepository hotelMainFacilityRepository;
+
     @Override
     public HotelDto hotelsToHotelDto(Hotel hotels) {
         HotelDto hotelDto = hotelMapper.hotelsToHotelDto(hotels);
 
+        log.info("Hotel Facilities -> {}", hotels.getMainFacility());
         HotelDescriptionDto descriptionDto = new HotelDescriptionDto();
-        hotels.getDescriptions().stream().forEach((desc) -> {
+        hotels.getDescriptions().forEach((desc) -> {
             log.info("Description -> {}", desc.getType());
             if (desc.getType().equals("short")) {
                 descriptionDto.setShortDesc(desc.getText());
@@ -76,11 +81,11 @@ public class HotelMapperDecorator implements HotelMapper {
         }
         hotelDto.setPolicy(policyDto);
 
-        List<String> additionalInformations = new ArrayList<>();
-        hotels.getAdditionalInformations().stream().forEach((information) -> {
-            additionalInformations.add(information.getInformation());
+        List<String> additionalInformation = new ArrayList<>();
+        hotels.getAdditionalInformations().forEach((information) -> {
+            additionalInformation.add(information.getInformation());
         });
-        hotelDto.setAdditionalInformations(additionalInformations);
+        hotelDto.setAdditionalInformations(additionalInformation);
 
         List<HotelFacilityDto> facilityDto = hotelFacilitiesService.getFacilityHotel(hotels);
         hotelDto.setFacilities(facilityDto);
@@ -178,7 +183,7 @@ public class HotelMapperDecorator implements HotelMapper {
     }
 
     @Override
-    public HotelAvailable detailHotelDtoToHotelAvailable(DetailHotelForListDto detailHotelForListDto) {
+    public HotelAvailable detailHotelDtoToHotelAvailable(DetailHotelForListDto detailHotelForListDto, Integer cityId) {
 
         HotelAvailable hotelAvailable = new HotelAvailable();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -216,11 +221,15 @@ public class HotelMapperDecorator implements HotelMapper {
             e.printStackTrace();
         }
 
-        Optional<Cities> city = citiesRepository.findById(Long.valueOf(1));
-        Optional<Provinces> province = provinceRepository.findById(Long.valueOf(1));
-
-        hotelAvailable.setCityId(city.get());
-        hotelAvailable.setProvinceId(province.get());
+        Optional<Cities> city = citiesRepository.findById(Long.valueOf(cityId));
+        Provinces province = null;
+        if(city.isPresent()){
+            province = city.get().getProvince();
+            hotelAvailable.setCityId(city.get());
+            hotelAvailable.setProvinceId(province);
+        }else{
+            return null;
+        }
 
         try {
             String facilities = objectMapper.writeValueAsString(detailHotelForListDto.getFacilities());
@@ -240,7 +249,7 @@ public class HotelMapperDecorator implements HotelMapper {
         hotelAvailable.setLongitude(detailHotelForListDto.getLongitude());
         hotelAvailable.setCheckIn(detailHotelForListDto.getCheckIn());
         hotelAvailable.setCheckOut(detailHotelForListDto.getCheckOut());
-        hotelAvailable.setCity(city.get().getNameEn() + ", " + province.get().getName());
+        hotelAvailable.setCity(city.get().getNameEn() + ", Indonesia");
         hotelAvailable.setFareType(detailHotelForListDto.getFareType());
         hotelAvailable.setFareAmount(detailHotelForListDto.getFareAmount());
         hotelAvailable.setNormalFare(detailHotelForListDto.getNormalFare());
@@ -268,6 +277,7 @@ public class HotelMapperDecorator implements HotelMapper {
     public DetailHotelForListDto hotelDtoToDetailHotelForListDto(HotelDto hotelDto) {
         DetailHotelForListDto detailHotelForListDto = hotelMapper.hotelDtoToDetailHotelForListDto(hotelDto);
 
+
         detailHotelForListDto.setLatitude(hotelDto.getLocation().getLatitude());
         detailHotelForListDto.setLongitude(hotelDto.getLocation().getLongitude());
         detailHotelForListDto.setCity(hotelDto.getLocation().getCity() + ", " + hotelDto.getLocation().getProvince());
@@ -286,16 +296,24 @@ public class HotelMapperDecorator implements HotelMapper {
         List<String> listFacilities = new ArrayList<>();
         for (HotelFacilityDto hotelFacilityDto : hotelDto.getFacilities()) {
             for (String facility : hotelFacilityDto.getItems()) {
-                listFacilities.add(facility);
+                boolean isContainsFacility = listFacilities.contains(facility);
+                if(!isContainsFacility){
+                    listFacilities.add(facility);
+                }
             }
         }
         detailHotelForListDto.setFacilities(listFacilities);
 
         List<String> listAmenities = new ArrayList<>();
         for (HotelRoomDto hotelRoomDto : hotelDto.getRooms()) {
+            log.info("Log List Amenities -> {}", listAmenities);
             for (RoomAmenityDto amenities : hotelRoomDto.getAmenities()) {
                 for (String textAmenities : amenities.getList()) {
-                    listAmenities.add(textAmenities);
+                    log.info("Amenities Logs -> {}", textAmenities);
+                    boolean isContainAmenities = listAmenities.contains(textAmenities);
+                    if(!isContainAmenities){
+                        listAmenities.add(textAmenities);
+                    }
                 }
             }
         }

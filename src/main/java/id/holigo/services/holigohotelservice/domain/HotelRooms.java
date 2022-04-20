@@ -52,6 +52,12 @@ public class HotelRooms {
     @Column(columnDefinition = "TINYINT")
     private Short maxOccupancy;
 
+    @Column(columnDefinition = "TINYINT")
+    private Short maxAdults;
+
+    @Column(columnDefinition = "TINYINT")
+    private Short maxChilds;
+
     @Lob
     private String description;
 

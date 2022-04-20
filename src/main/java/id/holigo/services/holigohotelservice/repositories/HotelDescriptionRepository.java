@@ -9,4 +9,6 @@ import id.holigo.services.holigohotelservice.domain.HotelDescription;
 
 public interface HotelDescriptionRepository extends JpaRepository<HotelDescription, Long>{
     Optional<HotelDescription> findByHotel(Hotel hotel);
+
+    Optional<HotelDescription> findByHotelAndType(Hotel hotel, String type);
 }
