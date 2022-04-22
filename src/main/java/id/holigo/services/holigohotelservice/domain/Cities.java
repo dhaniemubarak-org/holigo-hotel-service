@@ -3,14 +3,7 @@ package id.holigo.services.holigohotelservice.domain;
 import java.sql.Timestamp;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -43,7 +36,8 @@ public class Cities {
     private Boolean isActive;
 
     @ManyToOne
-    @JoinColumn(name = "country_id", nullable = false)
+    @JoinColumn(name = "country_id")
+    @org.hibernate.annotations.ForeignKey(name = "none")
     private Countries country;
 
     @ManyToOne
@@ -56,6 +50,7 @@ public class Cities {
     @UpdateTimestamp
     private Timestamp updatedAt;
     
-    @OneToMany(mappedBy = "city")
+    @OneToMany(mappedBy = "city",
+            cascade = CascadeType.ALL)
     private List<HotelAddresses> hotel;
 }

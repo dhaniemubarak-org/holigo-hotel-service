@@ -8,13 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import id.holigo.services.holigohotelservice.services.HotelAvailableService;
 import id.holigo.services.holigohotelservice.web.model.DetailHotelForListDto;
@@ -36,9 +30,23 @@ public class HotelAvailableController {
         return new ResponseEntity<HotelDto>(hotelDto, HttpStatus.OK);
     }
 
+    @GetMapping(path = "/{id}/rooms")
+    public ResponseEntity<?> detailHotelAvailableRoom(@PathVariable("id") Long id,
+                                                      @RequestHeader("user-id") Long userId,
+                                                      @RequestParam("checkIn") Date checkIn,
+                                                      @RequestParam("checkOut") Date checkOut,
+                                                      @RequestParam("adultAmount") Short adultAmount,
+                                                      @RequestParam("childAmount") Short childAmount,
+                                                      @RequestParam("childAge") String childAge,
+                                                      @RequestParam("roomAmount") Short roomAmount) {
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
     @GetMapping(path = "/{id}/test")
     public ResponseEntity<List<DetailHotelForListDto>> getAllAvailable(@PathVariable("id") Long id,
                                                                        @RequestParam("checkIn") Date checkIn, @RequestParam("cityId") Integer cityId) {
+
         List<DetailHotelForListDto> hotelDto = hotelAvailableService.generateAvailableHotel(checkIn, cityId);
         return new ResponseEntity<List<DetailHotelForListDto>>(hotelDto, HttpStatus.OK);
     }
