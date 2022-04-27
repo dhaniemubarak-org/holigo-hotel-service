@@ -15,6 +15,6 @@ public interface HotelRepository extends JpaRepository<Hotel, Long>{
     List<Hotel> findAllByIdIn(List<Long> hotelIdList);
 
 //    @Query("SELECT htl FROM Hotel as htl WHERE htl.id > 583 ORDER BY htl.id ASC")
-    @Query(nativeQuery = true, value = "SELECT * FROM hotel htl WHERE htl.id > :lastId ORDER BY htl.id LIMIT 50000")
+    @Query(nativeQuery = true, value = "SELECT * FROM hotel htl WHERE htl.id > :lastId ORDER BY htl.id LIMIT 10000")
     List<Hotel> findAllByIdGreaterThan(@Param("lastId") Integer lastId);
 }

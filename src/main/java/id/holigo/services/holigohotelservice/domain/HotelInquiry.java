@@ -29,9 +29,9 @@ public class HotelInquiry {
 
     private Long userId;
 
-    private Date dateCheckIn;
+    private Date checkIn;
 
-    private Date dateCheckOut;
+    private Date checkOut;
 
     private Short adultAmount;
 

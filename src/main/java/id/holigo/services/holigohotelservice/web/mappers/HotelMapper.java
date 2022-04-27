@@ -1,5 +1,6 @@
 package id.holigo.services.holigohotelservice.web.mappers;
 
+import id.holigo.services.holigohotelservice.web.model.HotelDetailFareDto;
 import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -53,4 +54,6 @@ public interface HotelMapper {
 
     @Mapping(target = "facilities", ignore = true)
     public DetailHotelForListDto hotelDtoToDetailHotelForListDto(HotelDto hotelDto);
+
+    public HotelDetailFareDto hotelDtoToHotelDetailFareDto(HotelDto hotelDto);
 }

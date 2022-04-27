@@ -3,6 +3,9 @@ package id.holigo.services.holigohotelservice.web.controller;
 import java.sql.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import id.holigo.services.holigohotelservice.web.model.InquiryRoomDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -15,8 +18,10 @@ import id.holigo.services.holigohotelservice.web.model.DetailHotelForListDto;
 import id.holigo.services.holigohotelservice.web.model.HotelAvailablePaginateForUser;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelDto;
 
+import javax.jms.JMSException;
+
 @RestController
-@RequestMapping("/api/v1/hotel/available")
+@RequestMapping("/api/v1/hotels/available")
 public class HotelAvailableController {
     private static final Integer DEFAULT_PAGE_NUMBER = 0;
     private static final Integer DEFAULT_PAGE_SIZE = 25;
@@ -31,16 +36,20 @@ public class HotelAvailableController {
     }
 
     @GetMapping(path = "/{id}/rooms")
-    public ResponseEntity<?> detailHotelAvailableRoom(@PathVariable("id") Long id,
-                                                      @RequestHeader("user-id") Long userId,
-                                                      @RequestParam("checkIn") Date checkIn,
-                                                      @RequestParam("checkOut") Date checkOut,
-                                                      @RequestParam("adultAmount") Short adultAmount,
-                                                      @RequestParam("childAmount") Short childAmount,
-                                                      @RequestParam("childAge") String childAge,
-                                                      @RequestParam("roomAmount") Short roomAmount) {
+    public ResponseEntity<InquiryRoomDto> detailHotelAvailableRoom(@PathVariable("id") Long id,
+                                                                   @RequestHeader("user-id") Long userId,
+                                                                   @RequestParam("checkIn") Date checkIn,
+                                                                   @RequestParam("checkOut") Date checkOut,
+                                                                   @RequestParam("adultAmount") Short adultAmount,
+                                                                   @RequestParam("childAmount") Short childAmount,
+                                                                   @RequestParam("childAge") String childAge,
+                                                                   @RequestParam("roomAmount") Short roomAmount)
+            throws JMSException, JsonMappingException, JsonProcessingException {
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        InquiryRoomDto inquiryRoom = hotelAvailableService.inquiryRoom(id, userId, checkIn, checkOut, adultAmount, childAmount, childAge, roomAmount);
+
+
+        return new ResponseEntity<InquiryRoomDto>(inquiryRoom, HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/{id}/test")

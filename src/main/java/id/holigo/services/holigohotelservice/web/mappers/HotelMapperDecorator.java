@@ -10,6 +10,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import id.holigo.services.holigohotelservice.repositories.HotelMainFacilityRepository;
+import id.holigo.services.holigohotelservice.web.model.HotelDetailFareDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import id.holigo.services.holigohotelservice.domain.Cities;
@@ -334,5 +335,11 @@ public class HotelMapperDecorator implements HotelMapper {
 
         return detailHotelForListDto;
     }
+
+    @Override
+    public HotelDetailFareDto hotelDtoToHotelDetailFareDto(HotelDto hotelDto){
+        return hotelMapper.hotelDtoToHotelDetailFareDto(hotelDto);
+    }
+
 
 }
