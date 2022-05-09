@@ -14,7 +14,7 @@ import id.holigo.services.holigohotelservice.web.model.ListPopularHotelDto;
 import id.holigo.services.holigohotelservice.web.model.PopularHotelByCityDto;
 
 @RestController
-@RequestMapping("/api/v1/hotel/populars")
+@RequestMapping("/api/v1/hotels/populars")
 public class PopularHotelController {
 
     @Autowired

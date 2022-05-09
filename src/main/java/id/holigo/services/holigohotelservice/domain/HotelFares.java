@@ -92,6 +92,9 @@ public class HotelFares {
     @JoinColumn(name = "hotel_inquiry_id")
     private HotelInquiry inquiry;
 
+    @Builder.Default
+    private Short status = 0;
+
     @CreationTimestamp
     private Timestamp createdAt;
 

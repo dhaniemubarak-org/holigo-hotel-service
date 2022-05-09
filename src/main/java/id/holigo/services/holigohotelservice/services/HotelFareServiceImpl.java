@@ -75,7 +75,6 @@ public class HotelFareServiceImpl implements HotelFareService {
         FareDetailDto fareDetailDto = FareDetailDto.builder().nraAmount(totalNraAmount).ntaAmount(totalNtaAmount).productId(28).userId(userId).build();
         FareDto fareDto = fareDetailService.getDetailProduct(fareDetailDto);
 
-
         HotelFares hotelFares = new HotelFares();
         hotelFares.setUserId(userId);
         hotelFares.setHotel(hotelRoomPrices.getHotel());

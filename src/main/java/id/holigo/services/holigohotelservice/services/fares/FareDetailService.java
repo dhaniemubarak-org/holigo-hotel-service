@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -24,6 +25,7 @@ public class FareDetailService {
 
     private final ObjectMapper objectMapper;
 
+    @Transactional
     public FareDto getDetailProduct(FareDetailDto fareDetailDto) throws JMSException, JsonMappingException, JsonProcessingException {
         log.info("Trying Sending Fare Detail -> {}", fareDetailDto);
         Message message = jmsTemplate.sendAndReceive(JmsConfig.GET_DETAIL_FARE_PRODUCT, new MessageCreator() {

@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -36,6 +37,7 @@ public class Provinces {
 
     @ManyToOne
     @JoinColumn(name = "country_id", nullable = false)
+    @JsonBackReference
     private Countries country;
 
     private String name;
@@ -47,6 +49,7 @@ public class Provinces {
     private Timestamp updatedAt;
 
     @OneToMany(mappedBy = "province")
+    @JsonBackReference
     private List<HotelAddresses> hotel;
 
 }

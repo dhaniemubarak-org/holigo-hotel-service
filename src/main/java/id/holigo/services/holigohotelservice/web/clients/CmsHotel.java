@@ -28,6 +28,8 @@ public class CmsHotel {
 
     private final RestTemplate restTemplate;
 
+    private static final String apiHost = "http://127.0.0.1:8000/";
+
     @Autowired
     private HotelSupplierCodeRepository hotelSupplierCodeRepository;
 
@@ -109,7 +111,7 @@ public class CmsHotel {
             ResponseCmsHotel data = new ResponseCmsHotel();
             do {
                 try {
-                    String response = restTemplate.getForObject("http://127.0.0.1:8000//hotels?page=" + pages
+                    String response = restTemplate.getForObject(apiHost + "hotels?page=" + pages
                             + "&country=ID&per_page=1&city=" + cities.getId(), String.class);
                     data = objectMapper.readValue(response, ResponseCmsHotel.class);
                 } catch (Exception e) {
@@ -126,9 +128,7 @@ public class CmsHotel {
 
     //    @Scheduled(fixedDelay = 360000000)
     public void getByHotel(Integer lastId) {
-        log.info("Test sudah masuk!");
         List<Hotel> listHotel = hotelRepository.findAllByIdGreaterThan(lastId);
-        log.info("List Hotelnya -> {}", listHotel);
         listHotel.forEach(this::createHotel);
     }
 
@@ -137,7 +137,7 @@ public class CmsHotel {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode detailHotel = null;
         try {
-            String response = restTemplate.getForObject("http://127.0.0.1:8000/hotels/" + hotelNode.get("id").asText(),
+            String response = restTemplate.getForObject(apiHost + "hotels/" + hotelNode.get("id").asText(),
                     String.class);
             detailHotel = objectMapper.readValue(response, JsonNode.class);
         } catch (Exception e) {
@@ -250,7 +250,7 @@ public class CmsHotel {
         JsonNode dataFacility = null;
         try {
             String response = restTemplate.getForObject(
-                    "http://127.0.0.1:8000/hotels/" + hotelNode.get("id").asText() + "/facilities", String.class);
+                    apiHost + "hotels/" + hotelNode.get("id").asText() + "/facilities", String.class);
             dataFacility = objectMapper.readValue(response, JsonNode.class);
         } catch (Exception e) {
             e.printStackTrace();
@@ -297,11 +297,8 @@ public class CmsHotel {
             }
 
             for (JsonNode childs : categoryFacility.get("childs")) {
-                log.info("Child Facility -> {}", childs.get("name").asText());
                 Facilities facilities = new Facilities();
                 String[] splitFacility = childs.get("name").asText().split("\\|");
-                log.info("Split Facility -> {}", (Object) splitFacility);
-                log.info("Split Length -> {}", splitFacility.length);
                 Optional<Facilities> fetchFacilities;
                 if (splitFacility.length < 2) {
                     splitFacility[0] = childs.get("name").asText();
@@ -344,7 +341,7 @@ public class CmsHotel {
 
         JsonNode detailHotel = null;
         try {
-            String response = restTemplate.getForObject("http://127.0.0.1:8000/hotels/" + hotelNode.getId(),
+            String response = restTemplate.getForObject(apiHost + "hotels/" + hotelNode.getId(),
                     String.class);
             detailHotel = objectMapper.readValue(response, JsonNode.class);
         } catch (Exception e) {
@@ -368,7 +365,6 @@ public class CmsHotel {
         }
 
         Cities city = new Cities();
-        log.info("CIty Id Yang dicari -> {}", detailHotel.get("addresses").get("city_id").asLong());
         Long cityId = detailHotel.get("addresses").get("city_id").asLong();
         if(cityId != null){
             log.info("City Id nya NULL nich!");
@@ -377,7 +373,6 @@ public class CmsHotel {
         }
         Optional<Cities> fetchCity = citiesRepository.findById(cityId);
         if (fetchCity.isPresent()) {
-            log.info("Apakah city ditemukan?", fetchCity.isPresent());
             city = fetchCity.get();
         } else {
             city = null;
@@ -477,7 +472,7 @@ public class CmsHotel {
         JsonNode dataFacility = null;
         try {
             String response = restTemplate
-                    .getForObject("http://127.0.0.1:8000/hotels/" + hotelNode.getId() + "/facilities", String.class);
+                    .getForObject(apiHost + "hotels/" + hotelNode.getId() + "/facilities", String.class);
             dataFacility = objectMapper.readValue(response, JsonNode.class);
         } catch (Exception e) {
             e.printStackTrace();
@@ -608,7 +603,7 @@ public class CmsHotel {
             List<JsonNode> listCities = new ArrayList<>();
             try {
                 String response = restTemplate
-                        .getForObject("http://127.0.0.1:8000/cities?country_id=" + countries.getId(), String.class);
+                        .getForObject(apiHost + "cities?country_id=" + countries.getId(), String.class);
                 listCities = objectMapper.readValue(response, new TypeReference<List<JsonNode>>() {
                 });
             } catch (Exception e) {

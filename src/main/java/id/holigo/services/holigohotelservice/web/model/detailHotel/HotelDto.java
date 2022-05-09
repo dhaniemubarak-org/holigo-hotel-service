@@ -2,6 +2,7 @@ package id.holigo.services.holigohotelservice.web.model.detailHotel;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.hotelRooms.HotelRoomDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,5 +30,6 @@ public class HotelDto {
     private HotelPolicyDto policy;
     private HoligoReviewDto holigoReview;
     private List<HotelFacilityDto> facilities;
+    @JsonIgnore
     private List<HotelRoomDto> rooms;
 }

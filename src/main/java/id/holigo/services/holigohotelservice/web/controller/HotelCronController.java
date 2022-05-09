@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.sql.Date;
 
 @RestController
-@RequestMapping("/api/v1/hotel/jobs")
+@RequestMapping("/api/v1/hotels/jobs")
 public class HotelCronController {
 
     @Autowired

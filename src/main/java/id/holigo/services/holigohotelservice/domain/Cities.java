@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -38,10 +39,12 @@ public class Cities {
     @ManyToOne
     @JoinColumn(name = "country_id")
     @org.hibernate.annotations.ForeignKey(name = "none")
+    @JsonBackReference
     private Countries country;
 
     @ManyToOne
     @JoinColumn(name = "province_id")
+    @JsonBackReference
     private Provinces province;
 
     @CreationTimestamp
@@ -52,5 +55,6 @@ public class Cities {
     
     @OneToMany(mappedBy = "city",
             cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<HotelAddresses> hotel;
 }

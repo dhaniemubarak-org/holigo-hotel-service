@@ -11,6 +11,12 @@ public class JmsConfig {
     public static final String GET_HOTEL_TRAVELOKA_EXTERNAL = "get-hotel-traveloka-external";
     public static final String GET_DETAIL_FARE_PRODUCT = "get-detail-fare-product";
 
+    public static final String GET_USER_DATA_BY_ID_QUEUE = "get-user-data-by-id-queue";
+
+    public static final String CREATE_NEW_TRANSACTION = "create-new-transaction";
+
+    public static final String DETAIL_PRODUCT_HOTEL_TRANSACTION = "detail-product-hotel-transaction";
+
     @Bean
     public MessageConverter jacksonJmsMessageConverter(){
         MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();

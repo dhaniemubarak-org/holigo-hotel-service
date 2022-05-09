@@ -60,10 +60,8 @@ public class HotelMapperDecorator implements HotelMapper {
     public HotelDto hotelsToHotelDto(Hotel hotels) {
         HotelDto hotelDto = hotelMapper.hotelsToHotelDto(hotels);
 
-        log.info("Hotel Facilities -> {}", hotels.getMainFacility());
         HotelDescriptionDto descriptionDto = new HotelDescriptionDto();
         hotels.getDescriptions().forEach((desc) -> {
-            log.info("Description -> {}", desc.getType());
             if (desc.getType().equals("short")) {
                 descriptionDto.setShortDesc(desc.getText());
             } else if (desc.getType().equals("long")) {
@@ -101,8 +99,6 @@ public class HotelMapperDecorator implements HotelMapper {
     @Override
     public DetailHotelForListDto hotelAvailableToDetailHotelForUserDto(HotelAvailable hotelAvailable) {
         ObjectMapper objectMapper = new ObjectMapper();
-        log.info("Mapping Hotel -> {}", hotelAvailable.getName());
-
         DetailHotelForListDto detailHotelForListDto = new DetailHotelForListDto();
         detailHotelForListDto.setId(hotelAvailable.getId().toString());
         detailHotelForListDto.setName(hotelAvailable.getName());

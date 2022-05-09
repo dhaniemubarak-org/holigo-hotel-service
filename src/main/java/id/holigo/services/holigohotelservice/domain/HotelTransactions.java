@@ -8,6 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Builder
@@ -103,7 +104,15 @@ public class HotelTransactions {
     @Enumerated(EnumType.STRING)
     private PaymentStatusEnum paymentStatus;
 
-    private Short flag;
+    @Builder.Default
+    private Short flag = 0;
 
+    private Date checkIn;
+
+    private Date checkOut;
+
+    private Short roomAmount;
+
+    private Short guestAmount;
 
 }
