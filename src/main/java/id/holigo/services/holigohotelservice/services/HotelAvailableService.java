@@ -26,4 +26,6 @@ public interface HotelAvailableService {
 
     InquiryRoomDto inquiryRoom(Long destinationId, Long userId, Date checkIn, Date checkOut, Short adultAmount, Short childAmount, String childAge, Short roomAmount) throws JMSException, JsonMappingException, JsonProcessingException;
 
+    void generateAvailableFromCms(Integer cityId, Date startDate, Date endDate);
+
 }

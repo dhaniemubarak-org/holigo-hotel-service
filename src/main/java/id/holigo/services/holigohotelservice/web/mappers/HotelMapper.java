@@ -10,6 +10,9 @@ import id.holigo.services.holigohotelservice.domain.Hotel;
 import id.holigo.services.holigohotelservice.web.model.DetailHotelForListDto;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelDto;
 
+import java.math.BigDecimal;
+import java.sql.Date;
+
 @Mapper
 @DecoratedWith(HotelMapperDecorator.class)
 public interface HotelMapper {
@@ -54,6 +57,9 @@ public interface HotelMapper {
 
     @Mapping(target = "facilities", ignore = true)
     public DetailHotelForListDto hotelDtoToDetailHotelForListDto(HotelDto hotelDto);
+
+    @Mapping(target = "facilities", ignore = true)
+    public DetailHotelForListDto hotelDtoToDetailHotelForListDto(HotelDto hotelDto, Date checkIn, BigDecimal fareAmount, BigDecimal ntaAmount);
 
     public HotelDetailFareDto hotelDtoToHotelDetailFareDto(HotelDto hotelDto);
 }

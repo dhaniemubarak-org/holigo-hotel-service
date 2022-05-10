@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import id.holigo.services.holigohotelservice.domain.*;
 import id.holigo.services.holigohotelservice.repositories.*;
+import id.holigo.services.holigohotelservice.web.model.GetHotelPricesDto;
+import id.holigo.services.holigohotelservice.web.model.HotelPricesDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -625,6 +628,20 @@ public class CmsHotel {
                 }
             });
         });
+    }
+
+    public List<HotelPricesDto> pullingHotelIndexPrice(Long id, Date startDate, Date endDate){
+        ObjectMapper objectMapper = new ObjectMapper();
+        GetHotelPricesDto getHotelPricesDto = new GetHotelPricesDto();
+        try{
+            String response = restTemplate.getForObject(apiHost + "/hotels/" + id + "/prices?start_date=" + startDate + "&end_date=" + endDate, String.class);
+            log.info("Response -> {}", response);
+            getHotelPricesDto = objectMapper.readValue(response, GetHotelPricesDto.class);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return getHotelPricesDto.getData();
     }
 
 }

@@ -9,8 +9,12 @@ import java.util.Optional;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import id.holigo.services.common.model.FareDetailDto;
+import id.holigo.services.common.model.FareDto;
 import id.holigo.services.holigohotelservice.repositories.HotelMainFacilityRepository;
+import id.holigo.services.holigohotelservice.services.fares.FareDetailService;
 import id.holigo.services.holigohotelservice.web.model.HotelDetailFareDto;
+import id.holigo.services.holigohotelservice.web.model.detailHotel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import id.holigo.services.holigohotelservice.domain.Cities;
@@ -22,15 +26,6 @@ import id.holigo.services.holigohotelservice.repositories.CitiesRepository;
 import id.holigo.services.holigohotelservice.repositories.ProvinceRepository;
 import id.holigo.services.holigohotelservice.services.HotelFacilitiesService;
 import id.holigo.services.holigohotelservice.web.model.DetailHotelForListDto;
-import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelDescriptionDto;
-import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelDto;
-import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelFacilityDto;
-import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelImagesDto;
-import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelLocationDto;
-import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelPolicyDto;
-import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelPriceDto;
-import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelTagDto;
-import id.holigo.services.holigohotelservice.web.model.detailHotel.RatingReviewDto;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.hotelRooms.HotelRoomDto;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.hotelRooms.RoomAmenityDto;
 import lombok.extern.slf4j.Slf4j;
@@ -55,6 +50,9 @@ public class HotelMapperDecorator implements HotelMapper {
 
     @Autowired
     private HotelMainFacilityRepository hotelMainFacilityRepository;
+
+    @Autowired
+    private FareDetailService fareDetailService;
 
     @Override
     public HotelDto hotelsToHotelDto(Hotel hotels) {
@@ -93,6 +91,46 @@ public class HotelMapperDecorator implements HotelMapper {
                 .toList();
         hotelDto.setRooms(listRoomDtos);
 
+        List<String> additional = new ArrayList<>();
+        additionalInformation.add("8 Orang baru saja melakukan booking");
+        additionalInformation.add("128 Orang melihat hotel ini.");
+        hotelDto.setAdditionalInformations(additional);
+
+        HotelDetailInformationDto detailInformationDto = new HotelDetailInformationDto();
+        detailInformationDto.setHeaderUrl("https://ik.imagekit.io/holigo/default-image.jpg");
+        detailInformationDto.setIllustration("https://ik.imagekit.io/holigo/default-image.jpg");
+        detailInformationDto.setTitle("Apa itu InDOnesia cARE?");
+        detailInformationDto.setBody("Akomodasi ini bersih, aman dan tersertifikasi CHSE dari Kementerian Pariwisata dan Ekonomi Kreatif.");
+
+        HotelInformationDto hotelInformationDto = new HotelInformationDto();
+        hotelInformationDto.setTitle("InDOnesia cARE");
+        hotelInformationDto.setImageUrl("https://ik.imagekit.io/holigo/Icon/idocare_InuJi4wb3.png");
+        hotelInformationDto.setSubtitle("Akomodasi ini bersih, aman dan tersertifikasi CHSE dari Kementerian Pariwisata dan Ekonomi Kreatif.");
+        hotelInformationDto.setDetail(detailInformationDto);
+
+        hotelDto.setHotelInformation(hotelInformationDto);
+
+        List<HotelStoryDto> listStories = new ArrayList<>();
+
+        HotelStoryDto story1 = new HotelStoryDto();
+        story1.setId(hotels.getId());
+        story1.setVideoUrl("https://ik.imagekit.io/holigo/Video/hotel/story/story-1.mp4");
+        story1.setName(hotels.getName());
+        story1.setRating(hotels.getRating());
+        story1.setFareAmount(BigDecimal.valueOf(310000.00));
+        story1.setTag("Suite Room");
+        listStories.add(story1);
+
+        HotelStoryDto story2 = new HotelStoryDto();
+        story2.setId(hotels.getId());
+        story2.setVideoUrl("https://ik.imagekit.io/holigo/Video/hotel/story/story-2.MP4");
+        story2.setName(hotels.getName());
+        story2.setRating(hotels.getRating());
+        story2.setFareAmount(BigDecimal.valueOf(512000.00));
+        story2.setTag("Deluxe Room");
+        listStories.add(story2);
+
+        hotelDto.setStories(listStories);
         return hotelDto;
     }
 
@@ -185,7 +223,6 @@ public class HotelMapperDecorator implements HotelMapper {
         HotelAvailable hotelAvailable = new HotelAvailable();
         ObjectMapper objectMapper = new ObjectMapper();
 
-        hotelAvailable.setId(Long.valueOf((detailHotelForListDto.getId())));
         hotelAvailable.setName(detailHotelForListDto.getName());
         hotelAvailable.setType(detailHotelForListDto.getType());
 
@@ -220,11 +257,11 @@ public class HotelMapperDecorator implements HotelMapper {
 
         Optional<Cities> city = citiesRepository.findById(Long.valueOf(cityId));
         Provinces province = null;
-        if(city.isPresent()){
+        if (city.isPresent()) {
             province = city.get().getProvince();
             hotelAvailable.setCityId(city.get());
             hotelAvailable.setProvinceId(province);
-        }else{
+        } else {
             return null;
         }
 
@@ -294,7 +331,7 @@ public class HotelMapperDecorator implements HotelMapper {
         for (HotelFacilityDto hotelFacilityDto : hotelDto.getFacilities()) {
             for (String facility : hotelFacilityDto.getItems()) {
                 boolean isContainsFacility = listFacilities.contains(facility);
-                if(!isContainsFacility){
+                if (!isContainsFacility) {
                     listFacilities.add(facility);
                 }
             }
@@ -308,7 +345,7 @@ public class HotelMapperDecorator implements HotelMapper {
                 for (String textAmenities : amenities.getList()) {
                     log.info("Amenities Logs -> {}", textAmenities);
                     boolean isContainAmenities = listAmenities.contains(textAmenities);
-                    if(!isContainAmenities){
+                    if (!isContainAmenities) {
                         listAmenities.add(textAmenities);
                     }
                 }
@@ -327,13 +364,87 @@ public class HotelMapperDecorator implements HotelMapper {
         detailHotelForListDto.setFreeRefundable(false);
 
         detailHotelForListDto.setCheckIn(Date.valueOf("2022-04-15"));
-        detailHotelForListDto.setCheckIn(Date.valueOf("2022-04-16"));
 
         return detailHotelForListDto;
     }
 
     @Override
-    public HotelDetailFareDto hotelDtoToHotelDetailFareDto(HotelDto hotelDto){
+    public DetailHotelForListDto hotelDtoToDetailHotelForListDto(HotelDto hotelDto, Date checkIn, BigDecimal fareAmount, BigDecimal ntaAmount) {
+        DetailHotelForListDto detailHotelForListDto = hotelMapper.hotelDtoToDetailHotelForListDto(hotelDto, checkIn, fareAmount, ntaAmount);
+        log.info("Fare Amount -> {}", fareAmount);
+        log.info("Nta Amount -> {}", ntaAmount);
+        BigDecimal nraAmount = fareAmount.subtract(ntaAmount);
+
+        FareDetailDto fareDetailDto = new FareDetailDto();
+        fareDetailDto.setProductId(28);
+        fareDetailDto.setNraAmount(nraAmount);
+        fareDetailDto.setNtaAmount(ntaAmount);
+        fareDetailDto.setUserId(Long.valueOf(5));
+
+        FareDto fareDto = null;
+        try {
+            fareDto = fareDetailService.getDetailProduct(fareDetailDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        detailHotelForListDto.setLatitude(hotelDto.getLocation().getLatitude());
+        detailHotelForListDto.setLongitude(hotelDto.getLocation().getLongitude());
+        detailHotelForListDto.setCity(hotelDto.getLocation().getCity() + ", " + hotelDto.getLocation().getProvince());
+        detailHotelForListDto.setFareType("PERNIGHT");
+        detailHotelForListDto.setFareAmount(fareDto.getFareAmount());
+        detailHotelForListDto.setNormalFare(fareAmount);
+        detailHotelForListDto.setPoint(fareDto.getHpAmount());
+
+        HotelPriceDto price = new HotelPriceDto();
+        price.setFareAmount(fareDto.getFareAmount());
+        price.setNormalFare(fareAmount);
+        price.setPoint(fareDto.getHpAmount());
+        price.setType("PERNIGHT");
+        detailHotelForListDto.setPrice(price);
+
+        List<String> listFacilities = new ArrayList<>();
+        for (HotelFacilityDto hotelFacilityDto : hotelDto.getFacilities()) {
+            for (String facility : hotelFacilityDto.getItems()) {
+                boolean isContainsFacility = listFacilities.contains(facility);
+                if (!isContainsFacility) {
+                    listFacilities.add(facility);
+                }
+            }
+        }
+        detailHotelForListDto.setFacilities(listFacilities);
+
+        List<String> listAmenities = new ArrayList<>();
+        for (HotelRoomDto hotelRoomDto : hotelDto.getRooms()) {
+            log.info("Log List Amenities -> {}", listAmenities);
+            for (RoomAmenityDto amenities : hotelRoomDto.getAmenities()) {
+                for (String textAmenities : amenities.getList()) {
+                    log.info("Amenities Logs -> {}", textAmenities);
+                    boolean isContainAmenities = listAmenities.contains(textAmenities);
+                    if (!isContainAmenities) {
+                        listAmenities.add(textAmenities);
+                    }
+                }
+            }
+        }
+        detailHotelForListDto.setAmenities(listAmenities);
+
+        List<String> imageUrl = new ArrayList<>();
+        for (HotelImagesDto hotelImage : hotelDto.getImages().stream().limit(3).toList()) {
+            imageUrl.add(hotelImage.getImageUrl());
+        }
+        detailHotelForListDto.setImageUrl(imageUrl);
+
+        detailHotelForListDto.setFreeBreakfast(false);
+        detailHotelForListDto.setRefundable(false);
+        detailHotelForListDto.setFreeRefundable(false);
+
+        detailHotelForListDto.setCheckIn(checkIn);
+        return detailHotelForListDto;
+    }
+
+    @Override
+    public HotelDetailFareDto hotelDtoToHotelDetailFareDto(HotelDto hotelDto) {
         return hotelMapper.hotelDtoToHotelDetailFareDto(hotelDto);
     }
 

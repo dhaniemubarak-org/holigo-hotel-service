@@ -1,6 +1,7 @@
 package id.holigo.services.holigohotelservice.repositories;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -20,4 +21,7 @@ public interface HotelAvailableRepository
 
     @Query("SELECT hv FROM HotelAvailable hv WHERE hv.name = (:name) AND hv.checkIn = (:tglCheckIn)")
     Optional<HotelAvailable> findByNameAndCheckIn(@Param("name") String name, @Param("tglCheckIn") Date checkIn);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM hotel_available hv WHERE hotel_id = (:hotelId) AND YEAR(check_in) = (:year) AND MONTH(check_in) = (:month)")
+    List<HotelAvailable> findByHotelAndBetweenDate(@Param("hotelId") Long hotelId, @Param("year") String year, @Param("month") String month);
 }

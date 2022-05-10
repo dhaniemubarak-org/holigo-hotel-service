@@ -19,11 +19,12 @@ import id.holigo.services.holigohotelservice.domain.*;
 import id.holigo.services.holigohotelservice.repositories.*;
 import id.holigo.services.holigohotelservice.services.fares.FareDetailService;
 import id.holigo.services.holigohotelservice.services.supplier.HotelRetrossService;
+import id.holigo.services.holigohotelservice.web.clients.CmsHotel;
 import id.holigo.services.holigohotelservice.web.exceptions.NotFoundException;
 import id.holigo.services.holigohotelservice.web.exceptions.RetrossErrorException;
 import id.holigo.services.holigohotelservice.web.mappers.HotelInquiryMapper;
-import id.holigo.services.holigohotelservice.web.model.InquiryDto;
-import id.holigo.services.holigohotelservice.web.model.InquiryRoomDto;
+import id.holigo.services.holigohotelservice.web.model.*;
+import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelPriceDto;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.hotelRooms.RoomAmenityDto;
 import id.holigo.services.holigohotelservice.web.model.room.DetailRoomDtoForUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,6 @@ import id.holigo.services.holigohotelservice.repositories.spesification.GenericS
 import id.holigo.services.holigohotelservice.repositories.spesification.SearchCriteria;
 import id.holigo.services.holigohotelservice.repositories.spesification.SearchOperation;
 import id.holigo.services.holigohotelservice.web.mappers.HotelMapper;
-import id.holigo.services.holigohotelservice.web.model.DetailHotelForListDto;
-import id.holigo.services.holigohotelservice.web.model.HotelAvailablePaginateForUser;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,6 +89,9 @@ public class HotelAvailableServiceImpl implements HotelAvailableService {
 
     @Autowired
     private FareDetailService fareDetailService;
+
+    @Autowired
+    private CmsHotel cmsHotel;
 
     public HotelDto getDetailHotelAvailable(Long id) {
         // MASIH DUMMY
@@ -250,6 +252,30 @@ public class HotelAvailableServiceImpl implements HotelAvailableService {
             postHotelAvailable(detailHotelForListDto, cityId);
         }
         return listDetailHotel;
+    }
+
+    public void generateAvailableFromCms(Integer cityId, Date startDate, Date endDate) {
+        Optional<Cities> city = citiesRepository.findById(Long.valueOf(cityId));
+        if (city.isEmpty()) {
+            log.info("Empty City!");
+        }
+        log.info("Getting Repository Hotel Address!");
+        List<HotelAddresses> hotelAddresses = hotelAddressRepository.findAllByCity(city.get());
+        List<Long> listHotelId = new ArrayList<>();
+        hotelAddresses.forEach(listAddress -> {
+            listHotelId.add(listAddress.getHotel().getId());
+        });
+        listHotelId.forEach(id -> {
+            Hotel hotel = hotelRepository.findById(id).orElseThrow(NotFoundException::new);
+            log.info("Get Hotel -> {}", hotel.getName());
+            HotelDto hotelDto = hotelMapper.hotelsToHotelDto(hotel);
+            List<HotelPricesDto> listHotelPrice = cmsHotel.pullingHotelIndexPrice(hotelDto.getId(), startDate, endDate);
+            listHotelPrice.forEach(hotelPrice -> {
+                DetailHotelForListDto detailHotelForListDto = new DetailHotelForListDto();
+                detailHotelForListDto = hotelMapper.hotelDtoToDetailHotelForListDto(hotelDto, hotelPrice.getDate(), hotelPrice.getPrice(), hotelPrice.getNta());
+                postHotelAvailable(detailHotelForListDto, cityId);
+            });
+        });
     }
 
     @Override

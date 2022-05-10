@@ -40,6 +40,11 @@ public class HotelStories {
     @JsonBackReference
     private Hotel hotel;
 
+    @ManyToOne
+    @JoinColumn(name = "city_id")
+    @JsonBackReference
+    private Cities city;
+
     private String videoUrl;
 
     private String name;

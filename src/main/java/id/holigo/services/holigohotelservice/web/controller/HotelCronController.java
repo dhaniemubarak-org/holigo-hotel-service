@@ -1,5 +1,6 @@
 package id.holigo.services.holigohotelservice.web.controller;
 
+import id.holigo.services.holigohotelservice.services.HotelAvailableService;
 import id.holigo.services.holigohotelservice.services.HotelCronService;
 import id.holigo.services.holigohotelservice.web.clients.CmsHotel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class HotelCronController {
     @Autowired
     private CmsHotel cmsHotel;
 
+    @Autowired
+    private HotelAvailableService hotelAvailableService;
+
     @GetMapping(path = "/pulling-hotel-external")
     public ResponseEntity<?> pullingHotelAvailable(@RequestParam("checkIn") Date checkIn, @RequestParam("cityId") int cityId) {
         hotelCronService.runningPullFromExternal(checkIn, cityId);
@@ -29,8 +33,14 @@ public class HotelCronController {
     }
 
     @GetMapping(path = "/pulling-hotel-sip")
-    public ResponseEntity<?> pullingHotelSIP(@RequestParam("lastId") Integer lastId){
+    public ResponseEntity<?> pullingHotelSIP(@RequestParam("lastId") Integer lastId) {
         cmsHotel.getByHotel(lastId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/generateAvailCmsHotel")
+    public ResponseEntity<?> generateAvailFromSIP(@RequestParam("cityId") Integer cityId, @RequestParam("startDate") Date startDate, @RequestParam("endDate") Date endDate) {
+        hotelAvailableService.generateAvailableFromCms(cityId, startDate, endDate);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
