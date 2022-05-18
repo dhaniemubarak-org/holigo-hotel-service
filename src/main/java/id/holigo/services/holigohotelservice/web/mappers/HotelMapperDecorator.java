@@ -2,6 +2,7 @@ package id.holigo.services.holigohotelservice.web.mappers;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,7 @@ import id.holigo.services.common.model.FareDetailDto;
 import id.holigo.services.common.model.FareDto;
 import id.holigo.services.holigohotelservice.repositories.HotelMainFacilityRepository;
 import id.holigo.services.holigohotelservice.services.fares.FareDetailService;
+import id.holigo.services.holigohotelservice.web.model.HotelAdditionalInformationDto;
 import id.holigo.services.holigohotelservice.web.model.HotelDetailFareDto;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,12 +80,6 @@ public class HotelMapperDecorator implements HotelMapper {
         }
         hotelDto.setPolicy(policyDto);
 
-        List<String> additionalInformation = new ArrayList<>();
-        hotels.getAdditionalInformations().forEach((information) -> {
-            additionalInformation.add(information.getInformation());
-        });
-        hotelDto.setAdditionalInformations(additionalInformation);
-
         List<HotelFacilityDto> facilityDto = hotelFacilitiesService.getFacilityHotel(hotels);
         hotelDto.setFacilities(facilityDto);
 
@@ -91,9 +87,16 @@ public class HotelMapperDecorator implements HotelMapper {
                 .toList();
         hotelDto.setRooms(listRoomDtos);
 
-        List<String> additional = new ArrayList<>();
-        additionalInformation.add("8 Orang baru saja melakukan booking");
-        additionalInformation.add("128 Orang melihat hotel ini.");
+        List<HotelAdditionalInformationDto> additional = new ArrayList<>();
+        HotelAdditionalInformationDto additionalInformation = new HotelAdditionalInformationDto();
+        additionalInformation.setInformation("8 Orang baru saja melakukan booking");
+        additionalInformation.setIconUrl("https://ik.imagekit.io/holigo/fasilitas_hotel/visible_bvsCxa8j7.png");
+
+        HotelAdditionalInformationDto addinf2 = new HotelAdditionalInformationDto();
+        addinf2.setIconUrl("https://ik.imagekit.io/holigo/fasilitas_hotel/visible_bvsCxa8j7.png");
+        addinf2.setInformation("128 Orang melihat hotel ini.");
+        additional.add(additionalInformation);
+        additional.add(addinf2);
         hotelDto.setAdditionalInformations(additional);
 
         HotelDetailInformationDto detailInformationDto = new HotelDetailInformationDto();
@@ -110,27 +113,120 @@ public class HotelMapperDecorator implements HotelMapper {
 
         hotelDto.setHotelInformation(hotelInformationDto);
 
-        List<HotelStoryDto> listStories = new ArrayList<>();
+        List<HotelReviewContentDto> listContent = new ArrayList<>();
+        HoligoReviewDto holigoReviewDto = new HoligoReviewDto();
 
-        HotelStoryDto story1 = new HotelStoryDto();
-        story1.setId(hotels.getId());
-        story1.setVideoUrl("https://ik.imagekit.io/holigo/Video/hotel/story/story-1.mp4");
-        story1.setName(hotels.getName());
-        story1.setRating(hotels.getRating());
-        story1.setFareAmount(BigDecimal.valueOf(310000.00));
-        story1.setTag("Suite Room");
-        listStories.add(story1);
+        HotelReviewUserDto user1 = HotelReviewUserDto.builder().name("Andika Aditya Wicaksono").imageUrl("https://ik.imagekit.io/holigo/default-image.jpg").build();
+        HotelReviewContentDto content1 = new HotelReviewContentDto();
+        content1.setUser(user1);
+        content1.setCountry("Indonesia");
+        content1.setCreatedAt(Timestamp.valueOf("2022-04-22 10:01:22"));
+        content1.setRating(4.9);
+        content1.setBody("Keren banget buat kepantai cuman jalan kaki. Pelayanannya juga ok banget, staff ramah, dan kebersihannya terjamin banget. Recommended pokoknya!");
 
-        HotelStoryDto story2 = new HotelStoryDto();
-        story2.setId(hotels.getId());
-        story2.setVideoUrl("https://ik.imagekit.io/holigo/Video/hotel/story/story-2.MP4");
-        story2.setName(hotels.getName());
-        story2.setRating(hotels.getRating());
-        story2.setFareAmount(BigDecimal.valueOf(512000.00));
-        story2.setTag("Deluxe Room");
-        listStories.add(story2);
+        List<String> images1 = new ArrayList<>();
+        images1.add("https://ik.imagekit.io/holigo/sample_images/hotel/kebun/angsana_1br/1_foiuWijna.jpg");
+        images1.add("https://ik.imagekit.io/holigo/sample_images/hotel/kebun/exterior/9_-gEKJO33e.webp");
+        images1.add("https://ik.imagekit.io/holigo/sample_images/hotel/kebun/kamboja_family/4_JWyMqBnqH.jpg");
+        content1.setImages(images1);
+        content1.setIsLike(true);
+        content1.setIsShow(true);
+        listContent.add(content1);
 
-        hotelDto.setStories(listStories);
+        HotelReviewUserDto user2 = HotelReviewUserDto.builder().name("Manunggal Surya Kencana").imageUrl("https://ik.imagekit.io/holigo/default-image.jpg").build();
+        HotelReviewContentDto content2 = new HotelReviewContentDto();
+        content2.setUser(user2);
+        content2.setCountry("Indonesia");
+        content2.setCreatedAt(Timestamp.valueOf("2022-05-10 09:30:22"));
+        content2.setRating(3.0);
+        content2.setBody("Kamar bersih dan nyaman tapi sayang AC nya tidak terlalu dingin. Saya sudah komplain untuk minta ganti kamar tapi pihak hotel berbelit untuk menentukan keputusan.");
+        List<String> images2 = new ArrayList<>();
+        images2.add("https://ik.imagekit.io/holigo/sample_images/hotel/sthala/deluxe_family_studio_room/3_5qwVe6UKQ.jpg");
+        images2.add("https://ik.imagekit.io/holigo/sample_images/hotel/sthala/exterior/3_uAJyQGdxqR.webp");
+        content2.setImages(images2);
+        content2.setIsLike(false);
+        content2.setIsShow(true);
+        listContent.add(content2);
+
+        holigoReviewDto.setTitle("4.0 - Fantastis");
+        holigoReviewDto.setSubtitle("Berdasarkan 2 ulasan");
+        holigoReviewDto.setIcon("https://ik.imagekit.io/holigo/Icon/logo-vanilla_6xIE2Z0c_.png");
+        holigoReviewDto.setContent(listContent);
+
+        HotelNearbyPlaceDto nearby1 = new HotelNearbyPlaceDto();
+        nearby1.setName("Soekarno Hatta International Airport (CGK)");
+        nearby1.setCategory("Transportasi");
+        nearby1.setDistance("22 km");
+        nearby1.setIcon("https://ik.imagekit.io/holigo/fasilitas_hotel/take-off_Xt8gdHmEixd.png");
+
+        HotelNearbyPlaceDto nearby2 = new HotelNearbyPlaceDto();
+        nearby2.setName("Pantai Pasir Putih");
+        nearby2.setCategory("Wisata Alam");
+        nearby2.setDistance("18 km");
+        nearby2.setIcon("https://ik.imagekit.io/holigo/fasilitas_hotel/Park_cSujUHjvchA.png");
+
+        HotelNearbyPlaceDto nearby3 = new HotelNearbyPlaceDto();
+        nearby3.setName("Cengkareng Golf Club");
+        nearby3.setCategory("Olahraga");
+        nearby3.setDistance("12 km");
+        nearby3.setIcon("https://ik.imagekit.io/holigo/fasilitas_hotel/golf_oi-HoTVxw.png");
+
+        List<HotelNearbyPlaceDto> popularAreas = new ArrayList<>();
+        popularAreas.add(nearby1);
+        popularAreas.add(nearby2);
+        popularAreas.add(nearby3);
+
+        hotelDto.setPopularAreas(popularAreas);
+
+        HotelNearbyPlaceDto nearby4 = new HotelNearbyPlaceDto();
+        nearby4.setName("KFC Terminal 2");
+        nearby4.setCategory("Restoran");
+        nearby4.setDistance("0.2 km");
+        nearby4.setIcon("https://ik.imagekit.io/holigo/fasilitas_hotel/Restaurant_V5CEQ45R1B.png");
+
+        HotelNearbyPlaceDto nearby5 = new HotelNearbyPlaceDto();
+        nearby5.setName("Solaria Soewarna");
+        nearby5.setCategory("Restoran");
+        nearby5.setDistance("0.6 km");
+        nearby5.setIcon("https://ik.imagekit.io/holigo/fasilitas_hotel/Restaurant_V5CEQ45R1B.png");
+
+        HotelNearbyPlaceDto nearby6 = new HotelNearbyPlaceDto();
+        nearby6.setName("Jakarta Convention Center");
+        nearby6.setCategory("Bisnis");
+        nearby6.setDistance("0 m");
+        nearby6.setIcon("https://ik.imagekit.io/holigo/fasilitas_hotel/bag_n0kLoeqFz.png");
+
+        List<HotelNearbyPlaceDto> nearbyList = new ArrayList<>();
+        nearbyList.add(nearby4);
+        nearbyList.add(nearby5);
+        nearbyList.add(nearby6);
+        hotelDto.setNearbyPlaces(nearbyList);
+
+        hotelDto.setHoligoReview(holigoReviewDto);
+
+        HotelTagDto hotelTag = HotelTagDto.builder().name("Pilihan Keluarga").color("#A17A0F").background("#FFF9E9").build();
+        hotelDto.setTag(hotelTag);
+
+        HotelPolicyDto hotelPolicyDto = new HotelPolicyDto();
+        hotelPolicyDto.setLongPolicy("<p><strong>Anak</strong><br />Tamu umur berapa pun bisa menginap di sini.</p>\n" +
+                "<p>Anak-anak 6 tahun ke atas dianggap sebagai tamu dewasa.</p>\n" +
+                "<p>Pastikan umur anak yang menginap sesuai dengan detail pemesanan. Jika berbeda, tamu mungkin akan dikenakan biaya tambahan saat check-in.</p>\n" +
+                "<p><br /><strong>Deposit</strong><br />Tamu tidak perlu membayar deposit saat check-in.</p>\n" +
+                "<p><br /><strong>Umur</strong><br />Tamu umur berapa pun bisa menginap di sini.</p>\n" +
+                "<p><br /><strong>Sarapan</strong><br />Sarapan tersedia pukul 06:30 - 10:30 waktu lokal.</p>\n" +
+                "<p><br /><strong>Hewan peliharaan</strong><br />Tidak diperbolehkan membawa hewan peliharaan.</p>\n" +
+                "<p><br /><strong>Merokok</strong><br />Kamar bebas asap rokok.</p>\n" +
+                "<p><br /><strong>Alkohol</strong><br />Minuman beralkohol diperbolehkan.</p>");
+        hotelPolicyDto.setShortPolicy("<p><strong>Anak</strong><br />Tamu umur berapa pun bisa menginap di sini.</p>\n" +
+                "<p>Anak-anak 6 tahun ke atas dianggap sebagai tamu dewasa.</p>\n" +
+                "<p>Pastikan umur anak yang menginap sesuai dengan detail pemesanan. Jika berbeda, tamu mungkin akan dikenakan biaya tambahan saat check-in.</p>\n" +
+                "<p><br /><strong>Deposit</strong><br />Tamu tidak perlu membayar deposit saat check-in.</p>\n" +
+                "<p><br /><strong>Umur</strong><br />Tamu umur berapa pun bisa menginap di sini.</p>\n" +
+                "<p><br /><strong>Sarapan</strong><br />Sarapan tersedia pukul 06:30 - 10:30 waktu lokal.</p>\n" +
+                "<p><br /><strong>Hewan peliharaan</strong><br />Tidak diperbolehkan membawa hewan peliharaan.</p>\n" +
+                "<p><br /><strong>Merokok</strong><br />Kamar bebas asap rokok.</p>\n" +
+                "<p><br /><strong>Alkohol</strong><br />Minuman beralkohol diperbolehkan.</p>");
+        hotelDto.setPolicy(hotelPolicyDto);
         return hotelDto;
     }
 
@@ -138,7 +234,7 @@ public class HotelMapperDecorator implements HotelMapper {
     public DetailHotelForListDto hotelAvailableToDetailHotelForUserDto(HotelAvailable hotelAvailable) {
         ObjectMapper objectMapper = new ObjectMapper();
         DetailHotelForListDto detailHotelForListDto = new DetailHotelForListDto();
-        detailHotelForListDto.setId(hotelAvailable.getId().toString());
+        detailHotelForListDto.setId(hotelAvailable.getHotelId().toString());
         detailHotelForListDto.setName(hotelAvailable.getName());
         detailHotelForListDto.setType(hotelAvailable.getType());
         detailHotelForListDto.setRating(hotelAvailable.getRating());
@@ -158,15 +254,19 @@ public class HotelMapperDecorator implements HotelMapper {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        HotelTagDto hotelTag = HotelTagDto.builder().name("Pilihan Keluarga").color("#A17A0F").background("#FFF9E9").build();
+        detailHotelForListDto.setTag(hotelTag);
 
-        try {
-            List<RatingReviewDto> ratingReviewDtos = objectMapper.readValue(hotelAvailable.getRatingReviews(),
-                    new TypeReference<List<RatingReviewDto>>() {
-                    });
-            detailHotelForListDto.setRatingReviews(ratingReviewDtos);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        RatingReviewDto reviewDto = RatingReviewDto.builder().provider("Holigo Review").rating(Double.valueOf(4.6)).icon("").build();
+        detailHotelForListDto.setRatingReviews(reviewDto);
+//        try {
+//            List<RatingReviewDto> ratingReviewDtos = objectMapper.readValue(hotelAvailable.getRatingReviews(),
+//                    new TypeReference<List<RatingReviewDto>>() {
+//                    });
+//            detailHotelForListDto.setRatingReviews(ratingReviewDtos);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         try {
             HotelLocationDto locationDto = objectMapper.readValue(hotelAvailable.getLocation(), HotelLocationDto.class);

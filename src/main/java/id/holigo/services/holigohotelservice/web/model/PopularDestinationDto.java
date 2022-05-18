@@ -1,5 +1,6 @@
 package id.holigo.services.holigohotelservice.web.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +14,10 @@ public class PopularDestinationDto {
     
     private Integer targetId;
 
-    private String city;
+    @JsonProperty("city")
+    private String name;
+
+    private String type;
 
     private String province;
 

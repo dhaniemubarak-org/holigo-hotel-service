@@ -6,16 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class GuestDto {
-    private String title;
-
-    private String type;
+@Builder
+public class ContactPersonDto {
 
     private String name;
+    private String email;
+    private String phoneNumber;
 
-    private String note;
 }

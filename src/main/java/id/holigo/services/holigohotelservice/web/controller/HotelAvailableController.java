@@ -1,11 +1,14 @@
 package id.holigo.services.holigohotelservice.web.controller;
 
+import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import id.holigo.services.holigohotelservice.web.model.InquiryRoomDto;
+import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelStoryDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -64,14 +67,17 @@ public class HotelAvailableController {
     public ResponseEntity<HotelAvailablePaginateForUser> getAllAvailable(
             @RequestParam(value = "pageNumber", required = false) Integer pageNumber,
             @RequestParam(value = "pageSize", required = false) Integer pageSize,
-            @RequestParam(value = "cityId") Long cityId,
+            @RequestParam(value = "destinationId", required = false) Long cityId,
+            @RequestParam(value = "destinationType", required = false) String destinationType,
             @RequestParam(value = "sortBy", required = false) String sortBy,
             @RequestParam(value = "orderBy", required = false) String orderBy,
             @RequestParam(value = "rating", required = false) String rating,
             @RequestParam(value = "facilities", required = false) String facilities,
             @RequestParam(value = "types", required = false) String types,
             @RequestParam(value = "checkIn", required = false) Date checkIn,
-            @RequestParam(value = "checkOut", required = false) Date checkOut) {
+            @RequestParam(value = "checkOut", required = false) Date checkOut,
+            @RequestParam(value = "lat", required = false) Double latitude,
+            @RequestParam(value = "long", required = false) Double longitude) {
         if (pageNumber == null || pageNumber < 0) {
             pageNumber = DEFAULT_PAGE_NUMBER;
         }
@@ -104,7 +110,8 @@ public class HotelAvailableController {
         }
 
         HotelAvailablePaginateForUser hotelAvailableList = hotelAvailableService.listHotelForUser(cityId,
-                PageRequest.of(pageNumber, pageSize, sort), rating, facilities, types, checkIn, checkOut);
+                PageRequest.of(pageNumber, pageSize, sort), rating, facilities, types, checkIn, checkOut, destinationType);
+
 
         return new ResponseEntity<>(hotelAvailableList, HttpStatus.OK);
     }

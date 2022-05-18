@@ -10,6 +10,6 @@ import id.holigo.services.holigohotelservice.domain.PopularDestination;
 
 public interface PopularDestinationRepository extends JpaRepository<PopularDestination, Integer> {
     
-    @Query("SELECT e FROM PopularDestination e WHERE e.city IN (:names)")
+    @Query("SELECT e FROM PopularDestination e WHERE e.name IN (:names)")
     List<PopularDestination> findAllByCity(@Param("names") List<String> names);
 }

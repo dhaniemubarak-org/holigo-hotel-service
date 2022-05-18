@@ -41,7 +41,9 @@ public class PopularDestination {
 
     private Integer targetId;
 
-    private String city;
+    private String name;
+
+    private String type;
 
     private String province;
 

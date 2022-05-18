@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class HotelStoryDto {
 
     private Long id;
+    private String coverUrl;
     private String videoUrl;
     private String name;
     private Double rating;

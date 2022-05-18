@@ -17,6 +17,8 @@ public class JmsConfig {
 
     public static final String DETAIL_PRODUCT_HOTEL_TRANSACTION = "detail-product-hotel-transaction";
 
+    public static final String CANCEL_HOTEL_TRANSACTION = "cancel-hotel-transaction";
+
     @Bean
     public MessageConverter jacksonJmsMessageConverter(){
         MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();

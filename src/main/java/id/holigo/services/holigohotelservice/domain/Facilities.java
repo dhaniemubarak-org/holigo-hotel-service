@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -34,6 +35,7 @@ public class Facilities {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @JsonBackReference
     private FacilityCategories category;
 
     private String name;

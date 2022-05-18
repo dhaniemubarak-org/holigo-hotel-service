@@ -44,10 +44,13 @@ public class HotelBookMapperDecorator implements HotelBookMapper {
         hotelTransactions.setPrcAmount(hotelFares.getPrcAmount());
         hotelTransactions.setLossAmount(hotelFares.getLossAmount());
         hotelTransactions.setSelectedID(hotelFares.getSelectedId());
-        hotelTransactions.setSelectedIDroom(hotelFares.getSelectedRoomId());
+        hotelTransactions.setSelectedIDRoom(hotelFares.getSelectedRoomId());
+        hotelTransactions.setContactName(requestBookDto.getContactPerson().getName());
+        hotelTransactions.setContactEmail(requestBookDto.getContactPerson().getEmail());
+        hotelTransactions.setContactPhoneNumber(requestBookDto.getContactPerson().getPhoneNumber());
+        hotelTransactions.setIsForSelf(requestBookDto.getIsForSelf());
         hotelTransactions.setGuestTitle(requestBookDto.getGuest().getTitle());
         hotelTransactions.setGuestName(requestBookDto.getGuest().getName());
-        hotelTransactions.setGuestPhoneNumber(requestBookDto.getGuest().getPhoneNumber());
         hotelTransactions.setGuestNote(requestBookDto.getGuest().getNote());
         hotelTransactions.setOrderStatus(OrderStatusEnum.BOOKED);
         hotelTransactions.setPaymentStatus(PaymentStatusEnum.SELECTING_PAYMENT);

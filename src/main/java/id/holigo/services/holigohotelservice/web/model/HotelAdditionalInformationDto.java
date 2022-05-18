@@ -9,13 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class GuestDto {
-    private String title;
-
-    private String type;
-
-    private String name;
-
-    private String note;
+public class HotelAdditionalInformationDto {
+    private String iconUrl;
+    private String information;
 }

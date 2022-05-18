@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelLocationDto;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelPriceDto;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelTagDto;
@@ -19,14 +20,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 public class DetailHotelForListDto {
-    
+
     private String id;
     private String name;
     private String type;
     private Double rating;
     private List<String> imageUrl;
     private HotelTagDto tag;
-    private List<RatingReviewDto> ratingReviews;
+    private RatingReviewDto ratingReviews;
     private HotelLocationDto location;
     private List<String> facilities;
     private List<String> amenities;
@@ -42,7 +43,8 @@ public class DetailHotelForListDto {
     private Boolean refundable;
     private Boolean freeRefundable;
 
+    @JsonIgnore
     private Date checkIn;
-
+    @JsonIgnore
     private Date checkOut;
 }

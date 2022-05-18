@@ -1,32 +1,32 @@
-package id.holigo.services.holigohotelservice.domain;
+package id.holigo.services.common.model.hotel;
 
 import id.holigo.services.common.model.OrderStatusEnum;
 import id.holigo.services.common.model.PaymentStatusEnum;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.UUID;
 
-@Builder
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
-@Entity
-@Table(name = "hotel_transactions")
-public class HotelTransactions {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@AllArgsConstructor
+@Builder
+public class HotelTransactionDto implements Serializable {
+    static final long serialVersionUID = -5123123L;
+
     private Long id;
 
-    @CreationTimestamp
     private Timestamp createdAt;
 
-    @UpdateTimestamp
     private Timestamp updatedAt;
 
     private Timestamp deletedAt;
@@ -47,37 +47,26 @@ public class HotelTransactions {
 
     private BigDecimal ntaAmount;
 
-    @Column(columnDefinition = "decimal(12,2) default 0")
     private BigDecimal totalEstimationPrice;
 
-    @Column(columnDefinition = "decimal(10,2) default 0")
     private BigDecimal cpAmount;
 
-    @Column(columnDefinition = "decimal(10,2) default 0")
     private BigDecimal mpAmount;
 
-    @Column(columnDefinition = "decimal(10,2) default 0")
     private BigDecimal ipAmount;
 
-    @Column(columnDefinition = "decimal(10,2) default 0")
     private BigDecimal hpAmount;
 
-    @Column(columnDefinition = "decimal(10,2) default 0")
     private BigDecimal hvAmount;
 
-    @Column(columnDefinition = "decimal(10,2) default 0")
     private BigDecimal prAmount;
 
-    @Column(columnDefinition = "decimal(10,2) default 0")
     private BigDecimal ipcAmount;
 
-    @Column(columnDefinition = "decimal(10,2) default 0")
     private BigDecimal hpcAmount;
 
-    @Column(columnDefinition = "decimal(10,2) default 0")
     private BigDecimal prcAmount;
 
-    @Column(columnDefinition = "decimal(10,2) default 0")
     private BigDecimal lossAmount;
 
     private String selectedID;
@@ -90,28 +79,18 @@ public class HotelTransactions {
 
     private String resNumber;
 
-    private String contactName;
-
-    private String contactEmail;
-
-    private String contactPhoneNumber;
-
-    @Builder.Default
-    private Boolean isForSelf = true;
-
     private String guestTitle;
 
     private String guestName;
 
+    private String guestPhoneNumber;
+
     private String guestNote;
 
-    @Enumerated(EnumType.STRING)
     private OrderStatusEnum orderStatus;
 
-    @Enumerated(EnumType.STRING)
     private PaymentStatusEnum paymentStatus;
 
-    @Builder.Default
     private Short flag = 0;
 
     private Date checkIn;
@@ -122,4 +101,5 @@ public class HotelTransactions {
 
     private Short guestAmount;
 
+    private UUID transactionId;
 }

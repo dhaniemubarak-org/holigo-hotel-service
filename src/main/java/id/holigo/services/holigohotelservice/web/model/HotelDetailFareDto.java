@@ -18,7 +18,7 @@ public class HotelDetailFareDto {
     private String name;
     private String type;
     private Double rating;
-    private List<String> additionalInformations;
+    private List<HotelAdditionalInformationDto> additionalInformations;
     private HotelInformationDto hotelInformation;
     private List<HotelStoryDto> stories;
     private HotelLocationDto location;

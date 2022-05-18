@@ -25,6 +25,7 @@ import id.holigo.services.holigohotelservice.web.exceptions.RetrossErrorExceptio
 import id.holigo.services.holigohotelservice.web.mappers.HotelInquiryMapper;
 import id.holigo.services.holigohotelservice.web.model.*;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelPriceDto;
+import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelStoryDto;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.hotelRooms.RoomAmenityDto;
 import id.holigo.services.holigohotelservice.web.model.room.DetailRoomDtoForUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,49 +95,8 @@ public class HotelAvailableServiceImpl implements HotelAvailableService {
     private CmsHotel cmsHotel;
 
     public HotelDto getDetailHotelAvailable(Long id) {
-        // MASIH DUMMY
-        // HotelPolicyDto hotelPolicy = HotelPolicyDto.builder().longPolicy(
-        // "Hewan peliharaan diizinkan , biaya tambahan berlaku. Hotel memperbolehkan
-        // check-in awal, bergantung pada ketersediaan kamar, dengan biaya tambahan.
-        // Hotel memperbolehkan check-out lebih lama, bergantung pada ketersediaan
-        // kamar, dengan biaya tambahan. Hotel ini akan mengenakan biaya tambahan untuk
-        // transportasi sebesar IDR 330,000.NOTICE: TEMPORARY CLOSURE & UPDATE OF PUBLIC
-        // FACILITIES To support and follow the Large Scale Social Restriction
-        // regulation from the local authorities and to prioritize the health and safety
-        // for all our guests, please be informed that the facilities: Gym & Fitness
-        // Center, Swimming Pool, Cubbies Playground, Spa and Sauna will be temporary
-        // closed until further notice. Restaurant will open from 06.00 AM to 10.30 PM
-        // (Monday - Friday) and 07.00 AM to 11.00 PM (Saturday - Sunday). Breakfast
-        // will be delivered to the room, restaurant not opened for dine-in, and only
-        // serving in room dining & take away. And facilities noticement: free parking
-        // listed is only applicable for one car per unit. We apologize for any
-        // inconvenience caused. Thank you for your understanding.")
-        // .shortPolicy(
-        // "Hewan peliharaan diizinkan , biaya tambahan berlaku. Hotel memperbolehkan
-        // check-in awal, bergantung pada ketersediaan kamar, dengan biaya tambahan.")
-        // .build();
-        // HotelDetailInformationDto detailInformationDto =
-        // HotelDetailInformationDto.builder()
-        // .headerUrl("https://imagekit.io/holigo/XXX.png")
-        // .illustration("https://imagekit.io/holigo/XXX.png")
-        // .title("Apa itu InDOnesia CARE?").body("\nSelamat Datang.").build();
-        // HotelInformationDto hotelInformationDto =
-        // HotelInformationDto.builder().imageUrl("https://XXX.co")
-        // .title("InDOnesia CARE")
-        // .subtitle("Akomodasi ini bersih, aman, dan tersertifikasi CHSE.")
-        // .detail(detailInformationDto).build();
 
         HotelDto hotelDto = new HotelDto();
-        // hotelDto.setId(id);
-        // hotelDto.setName("Ascott Sudirman Jakarta");
-        // hotelDto.setType("Hotel");
-        // hotelDto.setRating(5.0);
-        // List<String> additionalInformation = Arrays.asList("8 Orang baru saja
-        // melakukan booking!",
-        // "25 Orang melihat hotel ini!");
-        // hotelDto.setAdditionalInformations(additionalInformation);
-        // hotelDto.setPolicy(hotelPolicy);
-        // hotelDto.setHotelInformation(hotelInformationDto);
         log.info("Hotels ID -> {}", id);
         Optional<Hotel> hotel = hotelRepository.findById(id);
         if (hotel.isPresent()) {
@@ -151,7 +111,7 @@ public class HotelAvailableServiceImpl implements HotelAvailableService {
 
     @Override
     public HotelAvailablePaginateForUser listHotelForUser(Long destination, PageRequest pageRequest,
-                                                          String rating, String facilities, String types, Date checkIn, Date checkOut) {
+                                                          String rating, String facilities, String types, Date checkIn, Date checkOut, String destinationType) {
         HotelAvailablePaginateForUser hotelAvailablePaginateForUser;
         Page<HotelAvailable> hotelPage;
         GenericSpecification<HotelAvailable> andSpecification = new GenericSpecification<HotelAvailable>();
@@ -159,11 +119,15 @@ public class HotelAvailableServiceImpl implements HotelAvailableService {
         log.info("City Id -> {}", destination);
         Optional<Cities> city = citiesRepository.findById(destination);
 
-        if (city.isEmpty()) {
-            return null;
+        if(destinationType.equals("city") || destinationType.equals("kota")){
+            if (city.isEmpty()) {
+                return null;
+            }
+            andSpecification.add(new SearchCriteria("cityId", city.get(), SearchOperation.EQUAL));
+        } else if(destinationType.equals("wilayah") || destinationType.equals("area")){
+//            Find by Wilayah
+//            andSpecification.add(new SearchCriteria("area", areaName), SearchOperation.MATCH;
         }
-
-        andSpecification.add(new SearchCriteria("cityId", city.get(), SearchOperation.EQUAL));
         andSpecification.add(new SearchCriteria("checkIn", checkIn, SearchOperation.EQUAL));
 
         // orSpecification.add(new SearchCriteria("cityId", city.get(),
@@ -184,6 +148,7 @@ public class HotelAvailableServiceImpl implements HotelAvailableService {
         }
 
         if (facilities != null && !facilities.equals("")) {
+
             List<String> facility = new ArrayList<String>(Arrays.asList(facilities.split(",")));
             if (facility.size() <= 0) {
                 andSpecification
@@ -209,6 +174,11 @@ public class HotelAvailableServiceImpl implements HotelAvailableService {
         }
         hotelPage = hotelAvailableRepository.findAll(Specification.where(orSpecification).and(andSpecification),
                 pageRequest);
+
+//        List<HotelAvailablePaginateForUser> paginate = new ArrayList<>();
+//        hotelPage.getContent().forEach(page -> {
+//            paginate.add(hotelMapper.hotelAvailableToDetailHotelForUserDto());
+//        });
 
         hotelAvailablePaginateForUser = new HotelAvailablePaginateForUser(
                 hotelPage.getContent().stream().map(hotelMapper::hotelAvailableToDetailHotelForUserDto)
@@ -356,6 +326,9 @@ public class HotelAvailableServiceImpl implements HotelAvailableService {
                 Optional<HotelRoomPrices> fetchHotelRoomPrices = hotelRoomPricesRepository.firstOrFail(
                         roomDto.getBed(), roomDto.getBoard(), roomDto.getCharacteristic(), hotelInquiry.getCheckIn(), hotel, hotelRooms, responseDto.getSelectedID(), roomDto.getSelectedIDroom()
                 );
+                log.info("NtaAmount -> {}", roomDto.getNta());
+                log.info("PriceAmount -> {}", roomDto.getPrice());
+
                 BigDecimal nraAmount = roomDto.getPrice().subtract(roomDto.getNta());
 
                 FareDetailDto fareDetailDto = new FareDetailDto();

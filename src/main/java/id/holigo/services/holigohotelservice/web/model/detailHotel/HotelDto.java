@@ -3,6 +3,7 @@ package id.holigo.services.holigohotelservice.web.model.detailHotel;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import id.holigo.services.holigohotelservice.web.model.HotelAdditionalInformationDto;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.hotelRooms.HotelRoomDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +18,8 @@ public class HotelDto {
     private String name;
     private String type;
     private Double rating;
-    private List<String> additionalInformations;
+    private HotelTagDto tag;
+    private List<HotelAdditionalInformationDto> additionalInformations;
     private HotelInformationDto hotelInformation;
     private List<HotelStoryDto> stories;
     private HotelLocationDto location;

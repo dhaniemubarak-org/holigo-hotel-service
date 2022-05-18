@@ -2,8 +2,10 @@ package id.holigo.services.common.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import id.holigo.services.holigohotelservice.domain.HotelRooms;
+import id.holigo.services.holigohotelservice.web.model.ContactPersonDto;
 import id.holigo.services.holigohotelservice.web.model.GuestDto;
 import id.holigo.services.holigohotelservice.web.model.detailHotel.HotelDto;
+import id.holigo.services.holigohotelservice.web.model.detailHotel.hotelRooms.HotelRoomDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -41,11 +43,13 @@ public class DetailHotelTransactionDto {
     @Builder.Default
     private String iconUrl = "https://ik.imagekit.io/holigo/Icon_produk_homepage/hotel_M8iRX4bsTP.png";
 
+    private ContactPersonDto contactPerson;
+
     private GuestDto guest;
 
     private HotelDto hotel;
 
-    private HotelRooms room;
+    private HotelRoomDto room;
 
 
 }
